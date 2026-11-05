@@ -1,0 +1,1519 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fonte">
+<meta name="theme-color" content="#0D0A0B">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>window.CDF_LOCAL = true;</script>
+</head>
+<body>
+<title>Carnet de Fonte</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@600;700;800&display=swap">
+<style>
+/* Layout: one phone-first column (max 560px), sticky top bar carrying an "on air" light that turns on while you train,
+   fixed bottom tab bar, cards only for exercise blocks, KPI tiles and sheets. Single dark look, red and black like the gym. */
+:root{
+  --bg:#0D0A0B;
+  --surface:#171213;
+  --surface-2:#221B1C;
+  --line:#2F2627;
+  --line-2:#4A3D3E;
+  --fg:#F6F2F1;
+  --fg-2:#BFB3B2;
+  --muted:#8A7E7E;
+  --red:#E3051B;
+  --red-hi:#FF4458;
+  --red-soft:#7E1622;
+  --red-dim:#3A0C12;
+  --red-glow:rgba(227,5,27,.5);
+  --on-red:#FFFFFF;
+  --gold:#FFB547;
+  --ok:#5AD08A;
+  --tabbar-bg:rgba(20,16,17,.94);
+  --scrim:rgba(0,0,0,.62);
+  --shadow:rgba(0,0,0,.45);
+  --font-display:"Saira Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --font-body:"Barlow",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --r-sm:8px;--r-md:14px;--r-lg:18px;
+  --tabbar-h:62px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+html.lock,html.lock body{overflow:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;touch-action:manipulation}
+button:disabled{cursor:default;opacity:.4}
+input,textarea{font:inherit;color:inherit;margin:0}
+input[type=search]{-webkit-appearance:none;appearance:none}
+input[type=date]{-webkit-appearance:none;appearance:none}
+:focus-visible{outline:2px solid var(--red-hi);outline-offset:2px}
+h1,h2,h3{margin:0;font-family:var(--font-display);font-weight:800;line-height:1.02;letter-spacing:.005em;text-wrap:balance}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+.num{font-variant-numeric:tabular-nums}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--fg-2);font-size:15px}
+
+/* Top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:56px}
+.light{display:inline-flex;align-items:center;gap:9px;height:34px;padding:0 13px 0 11px;border-radius:7px;border:1.5px solid var(--red-soft);font-family:var(--font-display);font-weight:800;font-size:16px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-2);white-space:nowrap;transition:background .3s,box-shadow .3s,color .3s}
+.light i{width:9px;height:9px;border-radius:50%;background:var(--red-soft);flex-shrink:0}
+.light.on{background:var(--red);border-color:var(--red);color:var(--on-red);box-shadow:0 0 22px var(--red-glow)}
+.light.on i{background:var(--on-red);animation:blink 1.6s ease-in-out infinite}
+.savestate{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+.savestate[data-state=error]{color:var(--red-hi)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* Main */
+main{padding-block:18px calc(var(--tabbar-h) + env(safe-area-inset-bottom,0px) + 28px)}
+.view{display:flex;flex-direction:column;gap:30px}
+.sec{display:flex;flex-direction:column;gap:12px}
+.sec-title{font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-2)}
+.page-head{display:flex;flex-direction:column;gap:6px}
+.page-head h1{font-size:44px;text-transform:uppercase}
+.page-head p{color:var(--fg-2)}
+#banner:empty{display:none}
+#banner{margin-bottom:18px}
+.banner{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:14px;color:var(--fg-2)}
+.banner p{flex:1 1 220px;min-width:0}
+
+/* Buttons and fields */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 18px;border-radius:12px;font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:.07em;text-transform:uppercase;text-align:center}
+.btn-primary{background:var(--red);color:var(--on-red)}
+.btn-primary:active{background:var(--red-soft)}
+.btn-quiet{background:var(--surface-2);color:var(--fg)}
+.btn-ghost{border:1.5px dashed var(--line-2);color:var(--fg-2)}
+.btn-danger{color:var(--red-hi);min-height:44px;font-size:16px}
+.btn-danger.armed{background:var(--red);color:var(--on-red)}
+.btn-small{min-height:40px;padding:0 14px;font-size:16px;background:var(--surface-2);border-radius:10px;align-self:flex-start}
+.btn-mini{min-height:36px;padding:0 12px;font-size:14px;border-radius:9px;background:var(--surface);border:1px solid var(--line-2);color:var(--fg)}
+.btn-mini.armed{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.btn-block{width:100%}
+.link-btn{display:inline-flex;align-items:center;gap:2px;min-height:44px;color:var(--fg-2);font-weight:600;font-size:16px}
+.input{width:100%;min-width:0;height:50px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);font-size:17px;color:var(--fg)}
+.input::placeholder{color:var(--muted)}
+.input:focus{outline:none;border-color:var(--red-hi)}
+.field{display:flex;flex-direction:column;gap:8px}
+textarea.input{height:auto;min-height:88px;padding:12px 14px;resize:vertical;line-height:1.4}
+.icon-btn{min-width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;color:var(--muted);font-size:14px;font-weight:700;padding:0 8px;white-space:nowrap}
+.icon-btn.armed{background:var(--red);color:var(--on-red)}
+.round-btn{width:46px;height:46px;flex-shrink:0;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;color:var(--fg)}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:6px;background:var(--surface-2);color:var(--fg-2);font-size:12px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.chip-ex{background:transparent;border:1px dashed var(--line-2);color:var(--muted)}
+.chip-live{background:var(--red);color:var(--on-red)}
+
+/* Start screen */
+.hello h1{font-size:46px;text-transform:uppercase;line-height:.95;margin-top:4px}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:18px}
+.wd{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 7px;border-radius:10px;background:var(--surface);color:var(--muted)}
+.wd small{font-size:12px;font-weight:700;text-transform:uppercase}
+.wd b{font-family:var(--font-display);font-size:21px;line-height:1;color:var(--fg-2)}
+.wd.on{background:var(--red);color:var(--on-red)}
+.wd.on b{color:var(--on-red)}
+.wd.today{box-shadow:inset 0 0 0 2px var(--fg)}
+.week-note{margin-top:12px;color:var(--fg-2);font-size:15px}
+.date-line{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--fg-2);font-size:15px}
+.type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.type-btn{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding:14px;min-height:76px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);text-align:left;min-width:0}
+.type-btn:active{background:var(--surface-2);border-color:var(--red-soft)}
+.type-name{font-family:var(--font-display);font-weight:800;font-size:23px;text-transform:uppercase;line-height:1;overflow-wrap:anywhere}
+.type-sub{font-size:13px;color:var(--muted)}
+.custom{display:flex;gap:10px}
+.prog{display:flex;flex-direction:column;gap:10px}
+.prog-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 14px 14px 16px;min-height:86px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);text-align:left;width:100%}
+.prog-btn:active{background:var(--surface-2)}
+.prog-main{display:flex;flex-direction:column;gap:4px;min-width:0}
+.prog-tag{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.prog-btn .type-name{font-size:30px}
+.prog-btn .type-sub{color:var(--fg-2)}
+.prog-go{color:var(--muted);display:flex}
+.prog-btn.next{background:var(--red);border-color:var(--red);box-shadow:0 0 26px var(--red-glow)}
+.prog-btn.next:active{background:var(--red-soft)}
+.prog-btn.next .prog-tag,.prog-btn.next .type-sub,.prog-btn.next .prog-go,.prog-btn.next .type-name{color:var(--on-red)}
+.custom .btn{flex-shrink:0}
+
+/* Session rows */
+.s-list{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--r-md);border:1px solid var(--line);overflow:hidden}
+.s-row{display:grid;grid-template-columns:46px minmax(0,1fr) 20px;align-items:center;gap:12px;padding:12px 14px;text-align:left;width:100%}
+.s-row + .s-row,.s-list > .mini-ex{border-top:1px solid var(--line)}
+.s-row:active{background:var(--surface-2)}
+.s-date{display:flex;flex-direction:column;align-items:center;line-height:1;gap:3px}
+.s-date b{font-family:var(--font-display);font-size:28px;font-weight:800}
+.s-date small{font-size:12px;text-transform:uppercase;color:var(--muted);font-weight:700;letter-spacing:.06em}
+.s-main{display:flex;flex-direction:column;gap:3px;min-width:0}
+.s-name{font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.s-sub{font-size:14px;color:var(--fg-2)}
+.chev{color:var(--muted);display:flex}
+.chev .ic{width:18px;height:18px}
+.mini-ex{padding:10px 14px 12px;display:flex;flex-direction:column;gap:6px}
+.mini-ex li{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.mini-ex li span:first-child{color:var(--fg);min-width:0}
+.mini-ex li span:last-child{color:var(--fg-2);text-align:right;flex-shrink:0}
+.empty{padding:26px 18px;text-align:center;color:var(--fg-2);border:1.5px dashed var(--line-2);border-radius:var(--r-md);display:flex;flex-direction:column;gap:14px;align-items:center}
+.empty b{font-family:var(--font-display);font-size:22px;text-transform:uppercase;color:var(--fg);letter-spacing:.02em}
+
+/* Editor */
+.editor{display:flex;flex-direction:column;gap:16px}
+.ed-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:-8px}
+.live-tag{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-display);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:15px;color:var(--red-hi)}
+.live-tag i{width:8px;height:8px;border-radius:50%;background:var(--red-hi);animation:blink 1.6s infinite}
+.ed-name{font-family:var(--font-display);font-weight:800;font-size:40px;line-height:1.1;text-transform:uppercase;background:transparent;border:0;border-bottom:2px solid var(--line);border-radius:0;padding:2px 0 6px;width:100%;min-width:0;color:var(--fg)}
+.ed-name:focus{outline:none;border-color:var(--red)}
+.ed-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.date-pill{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 6px 0 12px;height:44px;max-width:100%}
+.date-pill span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.date-pill input{background:transparent;border:0;color:var(--fg);font-size:16px;height:42px;min-width:0}
+.date-pill input:focus{outline:none}
+.ed-stats{font-size:14px;color:var(--fg-2)}
+.hint{font-size:14px;color:var(--fg-2);background:var(--surface);border:1px solid var(--line);padding:11px 13px;border-radius:12px}
+.hint b{color:var(--fg)}
+.ex-list{display:flex;flex-direction:column;gap:14px}
+.ex-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 12px 14px 14px;display:flex;flex-direction:column;gap:10px}
+.ex-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ex-title{display:flex;flex-direction:column;gap:6px;min-width:0;align-items:flex-start}
+.ex-title h3{font-size:25px;text-transform:uppercase;overflow-wrap:anywhere}
+.ex-tools{display:flex;gap:2px;flex-shrink:0;margin-top:-4px}
+.ex-last{font-size:14px;color:var(--fg-2)}
+.ex-last b{color:var(--fg);font-weight:600}
+.sets{display:flex;flex-direction:column;gap:7px}
+.set-row{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1fr) 48px 32px;gap:7px;align-items:center}
+.set-headrow{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.set-headrow span{text-align:center}
+.set-n{display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--font-display);font-weight:800;font-size:21px;color:var(--muted);line-height:1}
+.set-row.filled .set-n{color:var(--fg)}
+.pr{font-family:var(--font-body);font-size:10px;font-weight:800;color:var(--bg);background:var(--gold);border-radius:4px;padding:2px 4px 1px;letter-spacing:.04em;line-height:1}
+.set-in{height:48px;width:100%;min-width:0;text-align:center;font-size:20px;font-weight:600;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font-variant-numeric:tabular-nums;padding:0 4px}
+.set-in::placeholder{color:var(--muted);opacity:1}
+.set-in:focus{outline:none;border-color:var(--red-hi);background:var(--bg)}
+.set-in:disabled{opacity:1;color:var(--fg)}
+.set-row.filled .set-in{border-color:var(--line-2);background:var(--bg)}
+.set-row.is-pr .set-in[data-f=kg]{border-color:var(--gold);color:var(--gold)}
+.check{height:48px;border-radius:10px;border:1.5px solid var(--line-2);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.check[aria-pressed=true]{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.check:disabled{opacity:1}
+.del-set{height:40px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.del-set .ic{width:18px;height:18px}
+.ed-actions{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.ed-note{font-size:13px;color:var(--muted);text-align:center;margin:-2px 8px 10px}
+
+/* Sheet */
+.sheet-back{position:fixed;inset:0;background:var(--scrim);z-index:40}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-height:88vh;max-height:88dvh;display:flex;flex-direction:column;background:var(--surface);border-radius:20px 20px 0 0;border-top:1px solid var(--line-2);box-shadow:0 -10px 40px var(--shadow)}
+.sheet-grip{width:40px;height:5px;border-radius:3px;background:var(--line-2);margin:8px auto 0;flex-shrink:0}
+.sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;width:100%;max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:-8px;background:var(--surface);padding-top:8px;padding-bottom:4px;z-index:1}
+.sheet-head h2{font-size:28px;text-transform:uppercase}
+.pk-list{display:flex;flex-direction:column}
+.pk-h{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:16px 0 6px}
+.pick{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:50px;padding:8px 2px;border-bottom:1px solid var(--line);text-align:left;width:100%}
+.pick:active{background:var(--surface-2)}
+.pick-name{font-weight:600;font-size:17px;min-width:0}
+.pick-sub{font-size:13px;color:var(--muted);text-align:right;flex-shrink:0}
+.pick-create .pick-name{color:var(--red-hi)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip-btn{min-height:42px;padding:0 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line-2);font-weight:600}
+.chip-btn:active{background:var(--red);border-color:var(--red)}
+
+/* History */
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+.seg button{height:42px;border-radius:9px;font-weight:700;color:var(--fg-2);font-size:16px}
+.seg button[aria-selected=true]{background:var(--surface-2);color:var(--fg);box-shadow:inset 0 -2px 0 var(--red)}
+.month-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:22px;text-transform:uppercase}
+.month-h span{font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0}
+.x-row{display:grid;grid-template-columns:minmax(0,1fr) auto 18px;gap:12px;align-items:center;padding:12px 14px;text-align:left;width:100%}
+.x-row + .x-row{border-top:1px solid var(--line)}
+.x-row:active{background:var(--surface-2)}
+.x-name{font-weight:700;font-size:17px;display:block}
+.x-sub{font-size:13px;color:var(--muted);display:block}
+.x-rec{font-family:var(--font-display);font-weight:800;font-size:22px}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tile{background:var(--surface-2);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile small{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.tile b{font-family:var(--font-display);font-weight:800;font-size:26px;line-height:1.05}
+.tile span{font-size:12px;color:var(--fg-2)}
+.ex-hist li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.ex-hist li span:first-child{color:var(--fg-2);flex-shrink:0}
+.ex-hist li span:last-child{text-align:right;min-width:0}
+
+/* Calendar */
+.mhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mhead .mtitle{text-align:center;min-width:0}
+.mhead h1{font-size:34px;text-transform:uppercase}
+.cal-sum{text-align:center;color:var(--fg-2);font-size:15px;margin-top:-18px}
+.cal{display:flex;flex-direction:column;gap:6px}
+.cal-wd,.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.cal-wd span{text-align:center;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.1em}
+.day,.day-blank{aspect-ratio:1/1.12;max-width:100%;min-width:0}
+.day{border-radius:10px;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:7px 2px 6px;overflow:hidden}
+.day .dn{font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--fg-2);line-height:1}
+.day .dl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px;line-height:1.1}
+.day.has{background:var(--red)}
+.day.has .dn,.day.has .dl{color:var(--on-red)}
+.day.future .dn{color:var(--muted)}
+.day.today{box-shadow:inset 0 0 0 2px var(--fg)}
+.day.sel{outline:2px solid var(--red-hi);outline-offset:2px}
+.day.has.sel{outline-color:var(--fg)}
+
+/* Recap */
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.k-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.k-val{font-family:var(--font-display);font-weight:800;font-size:42px;line-height:.95}
+.k-val small{font-size:22px;margin-left:3px;color:var(--fg-2)}
+.k-delta{font-size:13px;color:var(--fg-2)}
+.k-delta.up{color:var(--ok)}
+.readout{font-size:15px;color:var(--fg);min-height:22px}
+.readout span{color:var(--fg-2)}
+.chart{width:100%;max-width:100%;height:auto;display:block;overflow:visible}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .base{stroke:var(--line-2);stroke-width:1}
+.chart .axis{fill:var(--muted);font-size:11px;font-family:var(--font-body);font-variant-numeric:tabular-nums}
+.chart .axis.on{fill:var(--fg);font-weight:700}
+.chart .bar{fill:var(--red-soft)}
+.chart .bar.on{fill:var(--red)}
+.chart .hit{fill:transparent;cursor:pointer}
+.chart .line{fill:none;stroke:var(--red-hi);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .area{fill:url(#cdf-area)}
+.chart .pt{fill:var(--red-hi);stroke:var(--surface);stroke-width:2}
+.chart .pt.on{fill:var(--on-red);stroke:var(--red)}
+.gbars{display:flex;flex-direction:column;gap:11px}
+.gbar{display:grid;grid-template-columns:86px minmax(0,1fr) 72px;align-items:center;gap:10px;font-size:14px}
+.g-name{color:var(--fg);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g-track{height:10px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.g-track i{display:block;height:100%;background:var(--red);border-radius:0 4px 4px 0}
+.g-val{text-align:right;color:var(--fg-2)}
+.rec-list li,.top-list li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.rec-badge{font-size:11px;font-weight:800;color:var(--bg);background:var(--gold);border-radius:5px;padding:3px 6px 2px;letter-spacing:.04em}
+.rec-main{display:flex;flex-direction:column;min-width:0}
+.rec-main b{font-weight:700;font-size:16px}
+.rec-main small{font-size:13px;color:var(--muted)}
+.rec-val{font-family:var(--font-display);font-weight:800;font-size:22px;text-align:right}
+.rank{font-family:var(--font-display);font-weight:800;font-size:22px;color:var(--muted);width:20px;text-align:center}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fact{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-top:1px solid var(--line);min-width:0}
+.fact dt{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.fact dd{margin:0;font-weight:600;font-size:16px}
+
+/* Tab bar and toast */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--tabbar-bg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabbar .wrap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:var(--tabbar-h)}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;font-weight:600;color:var(--muted);position:relative}
+.tab .ic{width:24px;height:24px;stroke-width:1.8}
+.tab[aria-current=page]{color:var(--fg)}
+.tab[aria-current=page] .ic{stroke:var(--red-hi)}
+.tab .dot{position:absolute;top:9px;left:calc(50% + 10px);width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red-glow)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom,0px) + 14px);z-index:50;background:var(--fg);color:var(--bg);padding:12px 16px;border-radius:12px;font-weight:600;font-size:15px;width:max-content;max-width:calc(100% - 32px);box-shadow:0 8px 24px var(--shadow);text-align:center}
+/* Corps */
+.sec-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.w-hero{display:flex;align-items:baseline;gap:6px 14px;flex-wrap:wrap}
+.w-val{font-family:var(--font-display);font-weight:800;font-size:60px;line-height:.9}
+.w-val small{font-size:24px;color:var(--fg-2);margin-left:4px}
+.w-meta{color:var(--fg-2);font-size:14px}
+.w-chips{display:flex;flex-wrap:wrap;gap:8px}
+.stat-chip{display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:4px 10px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--fg)}
+.stat-chip span{color:var(--muted);font-weight:500}
+.w-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.w-form .date-pill{height:44px;grid-column:1/-1;justify-self:start}
+.kg-field{position:relative;display:block;min-width:0}
+.kg-field .input{padding-right:38px;font-size:20px;font-weight:600}
+.kg-field span{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none}
+.meas-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.meas-grid label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;min-width:0}
+.tiles2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.w-list li{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px;min-height:52px}
+.w-d{color:var(--fg-2)}
+.w-m{display:flex;flex-direction:column;min-width:0}
+.w-m b{font-size:16px}
+.w-m small{color:var(--muted);font-size:12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.form-grid .span2{grid-column:1/-1}
+.row-btns{display:flex;flex-wrap:wrap;gap:8px}
+.row-btns .btn{flex:1 1 140px}
+.chip-btn[aria-pressed=true]{background:var(--red);border-color:var(--red);color:var(--on-red)}
+
+/* Rest timer */
+.rest{position:fixed;z-index:24;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom,0px) + 10px);max-width:536px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:8px 8px 8px 16px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line-2);box-shadow:0 8px 28px var(--shadow);overflow:hidden}
+.rest-bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--red);transform-origin:left;transition:transform .25s linear}
+.rest-txt{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;line-height:1}
+.rest-txt small{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.rest-txt b{font-family:var(--font-display);font-size:30px;font-weight:800}
+.rest-btn{min-width:48px;height:44px;border-radius:10px;background:var(--surface);border:1px solid var(--line);font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;padding:0 8px}
+.rest-btn .ic{width:18px;height:18px}
+.rest.over{background:var(--red);border-color:var(--red);box-shadow:0 0 26px var(--red-glow)}
+.rest.over .rest-txt small,.rest.over .rest-txt b{color:var(--on-red)}
+html.resting main{padding-bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom,0px) + 100px)}
+html.resting .toast{bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom,0px) + 86px)}
+@media (min-width:600px){.hello h1{font-size:56px}.page-head h1{font-size:52px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="topbar"><div class="wrap">
+  <span id="light" class="light" aria-live="polite"><i></i><span id="light-text">Carnet de fonte</span></span>
+  <span id="savestate" class="savestate" data-state="idle"></span>
+</div></header>
+<main class="wrap">
+  <div id="banner"></div>
+  <div id="view" class="view"></div>
+</main>
+<nav class="tabbar" aria-label="Navigation"><div class="wrap" id="tabs"></div></nav>
+<div id="sheet-back" class="sheet-back" data-act="sheet-close" hidden></div>
+<div id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="Panneau" hidden><div class="sheet-grip"></div><div id="sheet-body" class="sheet-body"></div></div>
+<div id="rest" class="rest" role="timer" hidden><i id="rest-bar" class="rest-bar"></i><span class="rest-txt"><small id="rest-label">Repos</small><b id="rest-time" class="num">1:30</b></span><button class="rest-btn" data-act="rest-minus" aria-label="Retirer 15 secondes">−15</button><button class="rest-btn" data-act="rest-plus" aria-label="Ajouter 15 secondes">+15</button><button class="rest-btn" data-act="rest-stop" aria-label="Arrêter le minuteur"><svg class="ic" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button></div>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+(() => {
+"use strict";
+
+/* ---------- Reference data ---------- */
+const GROUPS = ["Pectoraux","Dos","Épaules","Biceps","Triceps","Jambes","Fessiers","Mollets","Abdos","Autre"];
+const LIB = {
+  "Pectoraux":["Développé couché","Développé incliné","Développé couché haltères","Développé incliné haltères","Écarté poulie","Pec deck","Dips","Pompes"],
+  "Dos":["Tractions","Tirage vertical","Tirage horizontal","Rowing barre","Rowing haltère","Soulevé de terre","Pull-over poulie","Shrugs"],
+  "Épaules":["Développé militaire","Développé haltères assis","Élévations latérales","Oiseau","Face pull","Rowing menton"],
+  "Biceps":["Curl barre","Curl haltères","Curl marteau","Curl pupitre","Curl poulie"],
+  "Triceps":["Extension poulie","Barre au front","Extension nuque haltère","Dips banc","Kickback"],
+  "Jambes":["Squat","Presse à cuisses","Leg extension","Leg curl","Fentes","Squat bulgare","Hack squat","Soulevé de terre roumain"],
+  "Fessiers":["Hip thrust","Abducteurs","Kickback poulie","Good morning"],
+  "Mollets":["Mollets debout","Mollets assis","Mollets à la presse"],
+  "Abdos":["Crunch","Crunch poulie","Relevé de jambes","Roue abdominale","Russian twist"]
+};
+const PROGRAM = [
+  {name: "Pectoraux · Dos", short: "Pec·Dos", groups: ["Pectoraux","Dos"]},
+  {name: "Bras · Épaules", short: "Bras·Ép", groups: ["Biceps","Triceps","Épaules"]},
+  {name: "Jambes", short: "Jambes", groups: ["Jambes","Fessiers","Mollets","Abdos"]}
+];
+const TABS = [
+  {id:"seance", label:"Séance", icon:'<svg class="ic" viewBox="0 0 24 24"><path d="M6.5 6.5v11M3.5 9.5v5M17.5 6.5v11M20.5 9.5v5M6.5 12h11"/></svg>'},
+  {id:"historique", label:"Historique", icon:'<svg class="ic" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5"/><path d="M3.5 3.5v5h5"/><path d="M12 7.5V12l3 2"/></svg>'},
+  {id:"calendrier", label:"Calendrier", icon:'<svg class="ic" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>'},
+  {id:"recap", label:"Récap", icon:'<svg class="ic" viewBox="0 0 24 24"><path d="M5 20v-8M10 20V5M15 20v-6M20 20V9"/></svg>'},
+  {id:"corps", label:"Corps", icon:'<svg class="ic" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><path d="M8 10.5a5.5 5.5 0 0 1 8 0"/><path d="M12 10.5l1.6-2.2"/></svg>'}
+];
+const MEAS = [["arm","Tour de bras","cm"],["chest","Tour de poitrine","cm"],["waist","Tour de taille","cm"],["thigh","Tour de cuisse","cm"],["fat","Masse grasse","%"]];
+const GOALS = [["masse","Prise de masse"],["seche","Sèche"],["maintien","Maintien"],["force","Force"]];
+const RESTS = [60, 90, 120, 150, 180];
+const ICON = {
+  check:'<svg class="ic" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  x:'<svg class="ic" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
+  trash:'<svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></svg>',
+  up:'<svg class="ic" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',
+  right:'<svg class="ic" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>',
+  left:'<svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>'
+};
+
+/* ---------- Helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad = n => String(n).padStart(2, "0");
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseYmd = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+const todayStr = () => ymd(new Date());
+const thisMonth = () => todayStr().slice(0, 7);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const nf0 = new Intl.NumberFormat("fr-FR", {maximumFractionDigits: 0});
+const nf1 = new Intl.NumberFormat("fr-FR", {maximumFractionDigits: 1});
+const nfKg = new Intl.NumberFormat("fr-FR", {maximumFractionDigits: 2});
+const fmtDate = (s, o) => new Intl.DateTimeFormat("fr-FR", o).format(parseYmd(s));
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const keyOf = n => String(n || "").trim().toLocaleLowerCase("fr-FR");
+const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const plural = (n, w, p) => `${nf0.format(n)} ${n > 1 ? (p || w + "s") : w}`;
+const clone = o => JSON.parse(JSON.stringify(o));
+function num(v){ if (v === null || v === undefined) return null; const t = String(v).trim().replace(",", "."); if (t === "") return null; const n = parseFloat(t); return isFinite(n) && n >= 0 ? n : null; }
+const fmtIn = n => n == null ? "" : String(n).replace(".", ",");
+function fmtVol(kg){ return kg >= 1000 ? nf1.format(kg / 1000) + " t" : nf0.format(kg) + " kg"; }
+function fmtW(kg){ return kg > 0 ? nfKg.format(kg) + " kg" : "PdC"; }
+function monthLabel(m){ const [y, mo] = m.split("-").map(Number); return cap(new Intl.DateTimeFormat("fr-FR", {month: "long", year: "numeric"}).format(new Date(y, mo - 1, 1))); }
+function monthName(m){ const [y, mo] = m.split("-").map(Number); return new Intl.DateTimeFormat("fr-FR", {month: "long"}).format(new Date(y, mo - 1, 1)); }
+function monthShort(m){ const [y, mo] = m.split("-").map(Number); return new Intl.DateTimeFormat("fr-FR", {month: "short"}).format(new Date(y, mo - 1, 1)); }
+function addMonths(m, n){ const [y, mo] = m.split("-").map(Number); const d = new Date(y, mo - 1 + n, 1); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`; }
+function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; }
+function isoWeek(d){ const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day); const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1)); return Math.ceil(((t - y0) / 86400000 + 1) / 7); }
+function store(k, v){ try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+function load(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+/* ---------- Training maths ---------- */
+const validSets = ex => (ex.sets || []).filter(s => s.reps > 0);
+const exVolume = ex => validSets(ex).reduce((a, s) => a + (s.kg > 0 ? s.kg * s.reps : 0), 0);
+function topKg(ex){ let m = null; for (const s of validSets(ex)) { const k = s.kg || 0; if (m === null || k > m) m = k; } return m; }
+function best1rm(sets){ let m = 0; for (const s of sets) if (s.kg > 0) m = Math.max(m, s.reps === 1 ? s.kg : s.kg * (1 + s.reps / 30)); return m; }
+function stats(s){ let ex = 0, sets = 0, reps = 0, vol = 0; for (const e of s.exercises || []) { const v = validSets(e); if (v.length) ex++; sets += v.length; reps += v.reduce((a, x) => a + x.reps, 0); vol += exVolume(e); } return {ex, sets, reps, vol}; }
+const statsLine = st => `${plural(st.ex, "exo")} · ${plural(st.sets, "série")} · ${fmtVol(st.vol)}`;
+function summary(sets){
+  if (!sets.length) return "";
+  const same = sets.every(s => (s.kg || 0) === (sets[0].kg || 0) && s.reps === sets[0].reps);
+  if (same) return `${sets.length} × ${sets[0].reps} à ${fmtW(sets[0].kg)}`;
+  return sets.map(s => `${s.kg > 0 ? nfKg.format(s.kg) : "PdC"}×${s.reps}`).join(" · ");
+}
+const progOf = n => PROGRAM.find(p => keyOf(p.name) === keyOf(n)) || null;
+const shortName = n => { const p = progOf(n); return p ? p.short : (n || "Séance"); };
+const tplId = n => norm(n).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "seance";
+const getTpl = n => { const t = S.templates.get(tplId(n)); return t && Array.isArray(t.exercises) && t.exercises.length ? t : null; };
+function latestEntry(name, date){ const r = S.IDX.get(keyOf(name)); if (!r) return null; const a = r.entries.filter(en => en.date <= date && !(S.draft && en.id === S.draft.id)); return a.length ? a[a.length - 1] : null; }
+const fmtRest = sec => sec % 60 ? `${Math.floor(sec / 60) ? Math.floor(sec / 60) + " min " : ""}${sec % 60} s` : `${sec / 60} min`;
+function ageOf(b){ const d = parseYmd(b), n = new Date(); let a = n.getFullYear() - d.getFullYear(); if (n.getMonth() < d.getMonth() || (n.getMonth() === d.getMonth() && n.getDate() < d.getDate())) a--; return a; }
+const weights = () => S.body.filter(x => x.weight > 0);
+const curWeight = () => { const w = weights(); return w.length ? w[w.length - 1].weight : null; };
+function progSub(name, lo){
+  const tp = getTpl(name), d = lo ? esc(fmtDate(lo.date, {weekday: "short", day: "numeric", month: "short"})) : "";
+  if (tp) return `Séance type · ${plural(tp.exercises.length, "exo")}${d ? " · dernière " + d : ""}`;
+  return d ? `Dernière : ${d} · charges reprises` : "Pas encore faite";
+}
+const cmpDesc = (a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : (b.createdAt || 0) - (a.createdAt || 0);
+function groupOf(name){
+  const k = keyOf(name);
+  for (const [g, arr] of Object.entries(LIB)) if (arr.some(n => keyOf(n) === k)) return g;
+  const r = S.IDX && S.IDX.get(k);
+  return r ? r.group : "Autre";
+}
+
+/* ---------- State ---------- */
+const S = {
+  db: null, col: null, canWrite: false, status: "init",
+  sessions: new Map(), draft: null, L: [], IDX: new Map(),
+  tab: "seance", histMode: "seances", histQ: "",
+  calMonth: thisMonth(), calDay: todayStr(), recapMonth: thisMonth(),
+  newDate: todayStr(), customName: "", confirm: null,
+  pickQ: "", pickCreate: null, barData: null, lineData: null,
+  save: "idle", mounted: null, restoreId: load("cdf.open"), templates: new Map(),
+  profile: null, body: [], wDate: todayStr(), wKg: "", meas: {}, measOpen: false, pf: null, wPts: null
+};
+const pending = new Map();
+
+function all(){
+  const m = new Map(S.sessions);
+  if (S.draft) m.set(S.draft.id, S.draft);
+  return [...m.entries()].map(([id, d]) => ({...d, id})).filter(s => s.date).sort(cmpDesc);
+}
+function exIndex(list){
+  const idx = new Map();
+  for (const s of [...list].reverse()) {
+    for (const e of s.exercises || []) {
+      const k = keyOf(e.name); if (!k) continue;
+      const v = validSets(e); if (!v.length) continue;
+      let r = idx.get(k);
+      if (!r) { r = {name: e.name, group: e.group || "Autre", entries: []}; idx.set(k, r); }
+      r.name = e.name; if (e.group) r.group = e.group;
+      r.entries.push({id: s.id, date: s.date, createdAt: s.createdAt || 0, name: s.name, sets: v, top: topKg(e), vol: exVolume(e), e1: best1rm(v)});
+    }
+  }
+  return idx;
+}
+const byDate = list => { const m = new Map(); for (const s of list) { if (!m.has(s.date)) m.set(s.date, []); m.get(s.date).push(s); } return m; };
+function entriesBefore(name, cur){
+  const r = S.IDX.get(keyOf(name)); if (!r) return [];
+  return r.entries.filter(en => en.id !== cur.id && (en.date < cur.date || (en.date === cur.date && en.createdAt < (cur.createdAt || 0))));
+}
+const lastTime = (name, cur) => { const a = entriesBefore(name, cur); return a.length ? a[a.length - 1] : null; };
+function prevBest(name, cur){ let m = null; for (const en of entriesBefore(name, cur)) if (en.top != null && (m === null || en.top > m)) m = en.top; return m; }
+function prIndex(ex, best){
+  if (best == null) return -1;
+  let m = -1, idx = -1;
+  (ex.sets || []).forEach((s, j) => { if (s.reps > 0 && (s.kg || 0) > m) { m = s.kg || 0; idx = j; } });
+  return m > best ? idx : -1;
+}
+
+/* ---------- Saving ---------- */
+function queueSave(d, now){
+  if (!S.canWrite || !S.col || !d) return;
+  pending.set(d.id, d);
+  S.save = "pending"; renderTop();
+  clearTimeout(S.saveT);
+  S.saveT = setTimeout(flush, now ? 0 : 600);
+}
+function toBody(d){
+  const b = {
+    name: (d.name || "").trim() || "Séance", date: d.date, notes: d.notes || "",
+    createdAt: d.createdAt || Date.now(), updatedAt: Date.now(),
+    exercises: (d.exercises || []).map(e => ({name: e.name, group: e.group || "Autre", sets: (e.sets || []).map(s => {
+      const o = {kg: s.kg ?? null, reps: s.reps ?? null};
+      if (s.pk != null) o.pk = s.pk; if (s.pr != null) o.pr = s.pr; return o; })}))
+  };
+  if (d.example) b.example = true;
+  if (d.copiedFrom) b.copiedFrom = d.copiedFrom;
+  if (d.fromType) b.fromType = true;
+  return b;
+}
+function flush(){
+  if (S.flushP) return S.flushP;
+  S.flushP = (async () => {
+    try {
+      while (pending.size) {
+        const [id, d] = pending.entries().next().value;
+        pending.delete(id);
+        await writeDoc(id, toBody(d), false);
+      }
+    } finally { S.flushP = null; }
+  })();
+  return S.flushP;
+}
+async function writeDoc(id, body, retried){
+  try {
+    await S.col.doc(id).set(body);
+    if (!pending.size && S.save !== "error") { S.save = "saved"; renderTop(); }
+  } catch (e) {
+    const c = e && e.code;
+    if ((c === "unavailable" || c === "resource_exhausted") && !retried) { await sleep(700 + Math.random() * 900); if (!pending.has(id)) return writeDoc(id, body, true); return; }
+    S.save = "error"; renderTop();
+    if (c === "invalid_argument") { S.canWrite = false; toast("Ce carnet est en lecture seule pour toi : rien n'a été enregistré."); render(); }
+    else if (c === "quota_exceeded") toast("Le carnet est plein. Supprime d'anciennes séances pour en ajouter.");
+    else toast("Pas d'enregistrement pour l'instant. Vérifie ta connexion : tes chiffres restent à l'écran.");
+  }
+}
+async function removeDoc(id){
+  pending.delete(id);
+  if (S.flushP) await S.flushP;
+  try { await S.col.doc(id).delete(); } catch (e) { toast("Suppression impossible pour l'instant. Réessaie dans un instant."); }
+}
+
+/* ---------- Session lifecycle ---------- */
+function remember(id){ store("cdf.open", id); }
+function startSession(name){
+  if (!S.canWrite) return;
+  name = (name || "").trim() || "Séance";
+  const date = S.newDate || todayStr();
+  const tpl = getTpl(name);
+  let exercises, src = null;
+  if (tpl) {
+    // Séance type: its exercises, order and set count; grey numbers from the latest time each exercise was done.
+    exercises = tpl.exercises.map(te => {
+      const last = latestEntry(te.name, date), from = last ? last.sets : (te.sets || []);
+      const n = Math.max(1, (te.sets || []).length);
+      return {name: te.name, group: te.group || groupOf(te.name), sets: [...Array(n)].map((_, j) => { const x = from[Math.min(j, from.length - 1)] || {}; return {kg: null, reps: null, pk: x.kg ?? null, pr: x.reps ?? null}; })};
+    });
+  } else {
+    src = S.L.find(s => keyOf(s.name) === keyOf(name) && s.date <= date && stats(s).sets > 0);
+    exercises = src ? src.exercises.filter(e => validSets(e).length).map(e => ({
+      name: e.name, group: e.group || groupOf(e.name),
+      sets: validSets(e).map(x => ({kg: null, reps: null, pk: x.kg ?? null, pr: x.reps}))
+    })) : [];
+  }
+  const now = Date.now();
+  S.draft = {id: S.col.doc().id, name, date, exercises, notes: "", createdAt: now, updatedAt: now, copiedFrom: src ? src.date : null, fromType: !!tpl};
+  S.newDate = todayStr(); S.customName = "";
+  remember(S.draft.id);
+  if (exercises.length) queueSave(S.draft);
+  if (date === todayStr()) keepAwake(true);
+  go("seance"); render(); window.scrollTo(0, 0);
+}
+function openSession(id){
+  const d = S.sessions.get(id); if (!d) return;
+  if (S.draft && S.draft.id !== id) closeDraft(false);
+  if (!S.draft) { S.draft = {...clone(d), id}; remember(id); }
+  S.confirm = null;
+  go("seance"); render(); window.scrollTo(0, 0);
+}
+function closeDraft(cleanup){
+  const d = S.draft; if (!d) return "none";
+  if (cleanup) {
+    d.exercises = d.exercises.map(e => ({...e, sets: e.sets.filter(s => s.reps > 0).map(s => ({kg: s.kg ?? null, reps: s.reps}))})).filter(e => e.sets.length);
+    delete d.copiedFrom; delete d.fromType;
+  }
+  const empty = !d.exercises.length && !(d.notes || "").trim();
+  S.draft = null; S.confirm = null; remember(null); keepAwake(false); if (cleanup) stopRest();
+  if (empty && (cleanup || !S.sessions.has(d.id))) { if (S.sessions.has(d.id) || pending.has(d.id)) removeDoc(d.id); else pending.delete(d.id); return "empty"; }
+  queueSave(d, true);
+  return d;
+}
+function addExercise(name, group){
+  const d = S.draft; if (!d) return;
+  const last = lastTime(name, d);
+  const sets = last ? last.sets.map(s => ({kg: null, reps: null, pk: s.kg ?? null, pr: s.reps})) : [{kg: null, reps: null, pk: null, pr: null}];
+  d.exercises.push({name, group: group || groupOf(name), sets});
+  queueSave(d); closeSheet(); render();
+  const idx = d.exercises.length - 1;
+  const el = document.querySelector(`.ex-card[data-ei="${idx}"]`);
+  if (el) el.scrollIntoView({block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+}
+
+/* ---------- Rendering ---------- */
+function render(fromData){
+  S.L = all(); S.IDX = exIndex(S.L);
+  renderTop(); renderBanner(); renderTabs();
+  const v = $("#view");
+  if (S.tab === "seance" && S.draft) {
+    const key = "ed:" + S.draft.id;
+    if (fromData && S.mounted === key) return;
+    v.innerHTML = editorHTML(); S.mounted = key; return;
+  }
+  const html = S.tab === "historique" ? histHTML() : S.tab === "calendrier" ? calHTML() : S.tab === "recap" ? recapHTML() : S.tab === "corps" ? corpsHTML() : startHTML();
+  const ae = document.activeElement, fid = ae && v.contains(ae) ? ae.id : null;
+  v.innerHTML = html; S.mounted = S.tab;
+  if (fid) { const el = document.getElementById(fid); if (el) el.focus({preventScroll: true}); }
+}
+function renderTop(){
+  const d = S.draft, light = $("#light"), lt = $("#light-text");
+  let on = false, txt = "Carnet de fonte";
+  if (d && d.date === todayStr()) {
+    on = true;
+    const mins = Math.floor((Date.now() - (d.createdAt || Date.now())) / 60000);
+    txt = mins >= 0 && mins < 300 ? `En salle · ${Math.floor(mins / 60)}:${pad(mins % 60)}` : "En salle";
+  } else if (d) txt = "Modification";
+  light.classList.toggle("on", on); lt.textContent = txt;
+  const sv = $("#savestate");
+  sv.textContent = {pending: "Enregistrement…", saved: "Enregistré", error: "Non enregistré"}[S.save] || "";
+  sv.dataset.state = S.save;
+}
+function renderTabs(){
+  $("#tabs").innerHTML = TABS.map(t => `<button class="tab" data-act="tab" data-tab="${t.id}"${S.tab === t.id ? ' aria-current="page"' : ""}>${t.icon}<span>${t.label}</span>${t.id === "seance" && S.draft && S.tab !== "seance" ? '<i class="dot" aria-hidden="true"></i>' : ""}</button>`).join("");
+}
+function renderBanner(){
+  let h = "";
+  const ex = [...S.sessions.values()].filter(d => d.example).length;
+  if (S.status === "nodb") h = `<div class="banner"><p>Ouvre ce carnet sur claude.ai, connecté à ton compte, pour enregistrer et retrouver tes séances.</p></div>`;
+  else if (S.status === "error") h = `<div class="banner"><p>Impossible de charger tes séances pour l'instant. Recharge la page un peu plus tard.</p></div>`;
+  else if (S.status === "slow") h = `<div class="banner"><p>Tes séances mettent du temps à arriver. Vérifie ta connexion : elles s'afficheront dès que possible.</p></div>`;
+  else if (S.db && !S.canWrite) h = `<div class="banner"><p>Lecture seule : tu peux consulter ce carnet, seul son propriétaire peut y ajouter des séances.</p></div>`;
+  else if (ex && S.canWrite) h = `<div class="banner"><p>${plural(ex, "séance")} marquée${ex > 1 ? "s" : ""} « Exemple » montre${ex > 1 ? "nt" : ""} le fonctionnement du carnet. Efface-les avant ta première vraie séance.</p><button class="btn-mini${S.confirm === "examples" ? " armed" : ""}" data-act="clear-examples">${S.confirm === "examples" ? "Confirmer l'effacement" : "Effacer les exemples"}</button></div>`;
+  const b = $("#banner"); if (b.innerHTML !== h) b.innerHTML = h;
+}
+const loadingNow = () => (S.status === "init" || S.status === "loading") && !S.L.length;
+
+function sessionRow(s){
+  const st = stats(s), d = parseYmd(s.date);
+  const live = S.draft && S.draft.id === s.id;
+  return `<button class="s-row" data-act="open" data-id="${esc(s.id)}">
+    <span class="s-date"><b class="num">${d.getDate()}</b><small>${esc(fmtDate(s.date, {weekday: "short"}).replace(".", ""))}</small></span>
+    <span class="s-main"><span class="s-name">${esc(s.name || "Séance")}${s.example ? '<span class="chip chip-ex">Exemple</span>' : ""}${live ? '<span class="chip chip-live">En cours</span>' : ""}</span>
+    <span class="s-sub num">${st.sets ? statsLine(st) : live ? "Séance ouverte, aucune série validée" : "Aucune série"}</span></span>
+    <span class="chev">${ICON.right}</span></button>`;
+}
+
+/* Start screen */
+function startHTML(){
+  const L = S.L, t = todayStr(), now = new Date();
+  const mon = mondayOf(now), by = byDate(L);
+  const days = [...Array(7)].map((_, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); return d; });
+  const letters = ["L","M","M","J","V","S","D"];
+  const wk = days.reduce((a, d) => a + (by.get(ymd(d)) || []).length, 0);
+  const mVol = L.filter(s => s.date.startsWith(t.slice(0, 7))).reduce((a, s) => a + stats(s).vol, 0);
+  const todays = by.get(t) || [];
+  const last = L.find(s => s.date < t && stats(s).sets > 0);
+  const lastProg = L.find(s => s.date <= t && stats(s).sets > 0 && progOf(s.name));
+  const nextIdx = lastProg ? (PROGRAM.indexOf(progOf(lastProg.name)) + 1) % PROGRAM.length : 0;
+  const others = [];
+  for (const s of L) { const n = (s.name || "").trim(); if (n && !progOf(n) && !others.some(x => keyOf(x) === keyOf(n))) others.push(n); if (others.length >= 4) break; }
+  const lastOf = n => L.find(s => keyOf(s.name) === keyOf(n) && stats(s).sets > 0);
+
+  let h = `<section class="hello">
+    <p class="eyebrow">Semaine ${isoWeek(now)}</p>
+    <h1>${esc(cap(fmtDate(t, {weekday: "long", day: "numeric", month: "long"})))}</h1>
+    <div class="week" aria-label="Séances de la semaine">${days.map((d, i) => { const ds = ymd(d); const has = (by.get(ds) || []).length; return `<span class="wd${has ? " on" : ""}${ds === t ? " today" : ""}" aria-label="${esc(fmtDate(ds, {weekday: "long", day: "numeric"}))}${has ? ", séance faite" : ""}"><small>${letters[i]}</small><b class="num">${d.getDate()}</b></span>`; }).join("")}</div>
+    <p class="week-note num">${loadingNow() ? "Chargement de tes séances…" : `${plural(wk, "séance")} cette semaine · ${fmtVol(mVol)} soulevés en ${monthName(t.slice(0, 7))}`}</p>
+  </section>`;
+
+  if (todays.length) h += `<section class="sec"><h2 class="sec-title">Aujourd'hui</h2><div class="s-list">${todays.map(sessionRow).join("")}</div></section>`;
+
+  if (S.canWrite) {
+    h += `<section class="sec"><h2 class="sec-title">Mon programme</h2>
+      <label class="date-line" for="new-date"><span>Date de la séance</span><span class="date-pill"><span>Le</span><input id="new-date" type="date" value="${esc(S.newDate)}"></span></label>
+      <div class="prog">${PROGRAM.map((p, i) => { const lo = lastOf(p.name), nx = i === nextIdx; return `<button class="prog-btn${nx ? " next" : ""}" data-act="start" data-name="${esc(p.name)}"><span class="prog-main"><span class="prog-tag">${nx ? "Prochaine séance" : "Séance " + (i + 1)}</span><span class="type-name">${esc(p.name)}</span><span class="type-sub">${progSub(p.name, lo)}</span></span><span class="prog-go">${ICON.right}</span></button>`; }).join("")}</div>
+      ${others.length ? `<div class="type-grid">${others.map(n => { const lo = lastOf(n); return `<button class="type-btn" data-act="start" data-name="${esc(n)}"><span class="type-name">${esc(n)}</span><span class="type-sub">${lo ? "Dernière : " + esc(fmtDate(lo.date, {day: "numeric", month: "short"})) : "Nouvelle séance"}</span></button>`; }).join("")}</div>` : ""}
+      <div class="custom"><input id="custom-name" class="input" placeholder="Autre séance (ex. Cardio, Abdos…)" autocomplete="off" enterkeyhint="go" value="${esc(S.customName)}"><button class="btn btn-primary" data-act="start-custom">Démarrer</button></div>
+    </section>`;
+  } else if (!loadingNow() && !L.length) {
+    h += `<div class="empty"><b>Aucune séance</b><p>Les séances apparaîtront ici une fois enregistrées.</p></div>`;
+  }
+
+  if (last) {
+    const lines = (last.exercises || []).filter(e => validSets(e).length).map(e => `<li><span>${esc(e.name)}</span><span class="num">${esc(summary(validSets(e)))}</span></li>`).join("");
+    h += `<section class="sec"><h2 class="sec-title">Dernière séance</h2><div class="s-list">${sessionRow(last)}<ul class="mini-ex">${lines}</ul></div></section>`;
+  } else if (!loadingNow() && !L.length && S.canWrite) {
+    h += `<div class="empty"><b>Ton carnet est vide</b><p>Choisis un type de séance ci-dessus pour noter ta première série. Les charges de la dernière fois seront reprises automatiquement les fois suivantes.</p></div>`;
+  }
+  return h;
+}
+
+/* Editor */
+function editorHTML(){
+  const d = S.draft, ro = !S.canWrite, dis = ro ? " disabled" : "";
+  const isToday = d.date === todayStr();
+  const anyFilled = d.exercises.some(e => validSets(e).length);
+  return `<section class="editor">
+    <div class="ed-top">
+      <button class="link-btn" data-act="close">${ICON.left}<span>Fermer</span></button>
+      ${isToday ? '<span class="live-tag"><i></i>En cours</span>' : `<span class="eyebrow">${esc(cap(fmtDate(d.date, {weekday: "long", day: "numeric", month: "long"})))}</span>`}
+    </div>
+    <input id="ed-name" class="ed-name" value="${esc(d.name)}" placeholder="Nom de la séance" autocomplete="off" aria-label="Nom de la séance"${dis}>
+    <div class="ed-meta">
+      <label class="date-pill" for="ed-date"><span>Date</span><input id="ed-date" type="date" value="${esc(d.date)}"${dis}></label>
+      <span id="ed-stats" class="ed-stats num">${statsLine(stats(d))}</span>
+    </div>
+    ${(d.copiedFrom || d.fromType) && !anyFilled && !ro ? `<p class="hint">${d.fromType ? "Exercices de ta <b>séance type</b>" : `Exercices repris de ta séance du <b>${esc(fmtDate(d.copiedFrom, {weekday: "long", day: "numeric", month: "long"}))}</b>`}. Les chiffres en gris sont ceux de ta dernière fois sur chaque exercice : touche ✓ pour valider la série telle quelle, ou tape tes nouvelles valeurs.</p>` : ""}
+    <div class="ex-list">${d.exercises.map(exCardHTML).join("") || (ro ? "" : `<div class="empty"><b>Aucun exercice</b><p>Ajoute ton premier exercice pour noter tes séries.</p></div>`)}</div>
+    ${ro ? "" : `<button class="btn btn-ghost btn-block" data-act="add-ex">+ Ajouter un exercice</button>`}
+    <label class="field" for="ed-notes"><span class="eyebrow">Notes</span><textarea id="ed-notes" class="input" rows="3" placeholder="Sensations, douleurs, réglages de machine…"${dis}>${esc(d.notes || "")}</textarea></label>
+    ${ro ? "" : `<div class="ed-actions">
+      ${d.exercises.length ? `<button class="btn btn-quiet btn-block" data-act="save-type">${getTpl(d.name) ? "Mettre à jour ma séance type" : "Enregistrer comme séance type"}</button>
+      <p class="ed-note">${getTpl(d.name) ? `Remplace ta séance type « ${esc((d.name || "").trim() || "Séance")} » par les exercices et séries de cette séance.` : `Tes prochaines séances « ${esc((d.name || "").trim() || "Séance")} » démarreront avec ces exercices et ce nombre de séries.`}</p>` : ""}
+      <button class="btn btn-primary btn-block" data-act="finish">Terminer la séance</button>
+      <button class="btn btn-danger btn-block${S.confirm === "del-session" ? " armed" : ""}" data-act="del-session">${S.confirm === "del-session" ? "Confirmer la suppression" : "Supprimer la séance"}</button>
+    </div>`}
+  </section>`;
+}
+function exCardHTML(e, i){
+  const d = S.draft, ro = !S.canWrite;
+  const last = lastTime(e.name, d), best = prevBest(e.name, d), pi = prIndex(e, best);
+  return `<article class="ex-card" data-ei="${i}">
+    <header class="ex-head">
+      <div class="ex-title"><h3>${esc(e.name)}</h3><span class="chip">${esc(e.group || "Autre")}</span></div>
+      ${ro ? "" : `<div class="ex-tools">${i > 0 ? `<button class="icon-btn" data-act="up-ex" data-e="${i}" aria-label="Monter ${esc(e.name)}">${ICON.up}</button>` : ""}<button class="icon-btn${S.confirm === "ex" + i ? " armed" : ""}" data-act="del-ex" data-e="${i}" aria-label="Retirer ${esc(e.name)}">${S.confirm === "ex" + i ? "Retirer ?" : ICON.trash}</button></div>`}
+    </header>
+    <p class="ex-last">${last ? `Dernière fois (${esc(fmtDate(last.date, {day: "numeric", month: "short"}))}) : <b class="num">${esc(summary(last.sets))}</b>` : "Première fois sur cet exercice"}${best != null && best > 0 ? ` · record <b class="num">${esc(fmtW(best))}</b>` : ""}</p>
+    <div class="sets">
+      <div class="set-row set-headrow" aria-hidden="true"><span>Série</span><span>Kg</span><span>Reps</span><span></span><span></span></div>
+      ${(e.sets || []).map((s, j) => setRowHTML(i, j, s, j === pi)).join("")}
+    </div>
+    ${ro ? "" : `<button class="btn btn-small" data-act="add-set" data-e="${i}">+ Série</button>`}
+  </article>`;
+}
+function setRowHTML(i, j, s, isPr){
+  const filled = s.reps > 0, ro = !S.canWrite, dis = ro ? " disabled" : "";
+  return `<div class="set-row${filled ? " filled" : ""}${isPr ? " is-pr" : ""}" data-e="${i}" data-s="${j}">
+    <span class="set-n num">${j + 1}<b class="pr"${isPr ? "" : " hidden"}>PR</b></span>
+    <input class="set-in" id="kg-${i}-${j}" data-f="kg" data-e="${i}" data-s="${j}" inputmode="decimal" enterkeyhint="next" autocomplete="off" value="${esc(fmtIn(s.kg))}" placeholder="${s.pk != null ? esc(fmtIn(s.pk)) : "kg"}" aria-label="Série ${j + 1} : charge en kilos"${dis}>
+    <input class="set-in" id="reps-${i}-${j}" data-f="reps" data-e="${i}" data-s="${j}" inputmode="numeric" enterkeyhint="done" autocomplete="off" value="${esc(fmtIn(s.reps))}" placeholder="${s.pr != null ? esc(fmtIn(s.pr)) : "reps"}" aria-label="Série ${j + 1} : répétitions"${dis}>
+    <button class="check" data-act="check" data-e="${i}" data-s="${j}" aria-pressed="${filled}" aria-label="Valider la série ${j + 1}"${dis}>${ICON.check}</button>
+    ${ro ? "<span></span>" : `<button class="del-set" data-act="del-set" data-e="${i}" data-s="${j}" aria-label="Supprimer la série ${j + 1}">${ICON.x}</button>`}
+  </div>`;
+}
+function refreshCard(i){
+  const d = S.draft, e = d && d.exercises[i]; if (!e) return;
+  const card = document.querySelector(`.ex-card[data-ei="${i}"]`); if (!card) return;
+  const pi = prIndex(e, prevBest(e.name, d));
+  card.querySelectorAll(".set-row[data-s]").forEach(row => {
+    const j = +row.dataset.s, s = e.sets[j]; if (!s) return;
+    row.classList.toggle("filled", s.reps > 0);
+    row.classList.toggle("is-pr", j === pi);
+    row.querySelector(".pr").hidden = j !== pi;
+    row.querySelector(".check").setAttribute("aria-pressed", String(s.reps > 0));
+  });
+  const st = $("#ed-stats"); if (st) st.textContent = statsLine(stats(d));
+}
+
+/* Picker sheet */
+function knownExercises(){
+  const m = new Map();
+  for (const [g, arr] of Object.entries(LIB)) for (const n of arr) m.set(keyOf(n), {name: n, group: g, rec: null});
+  for (const [k, r] of S.IDX) {
+    const rec = r.entries.reduce((b, x) => x.top != null && (b === null || x.top > b) ? x.top : b, null);
+    const cur = m.get(k);
+    m.set(k, {name: r.name, group: cur ? cur.group : (GROUPS.includes(r.group) ? r.group : "Autre"), rec});
+  }
+  return m;
+}
+const lastDate = r => r.entries[r.entries.length - 1].date;
+function pickerList(){
+  const known = knownExercises();
+  const inS = new Set((S.draft ? S.draft.exercises : []).map(e => keyOf(e.name)));
+  const item = x => `<button class="pick" data-act="pick" data-name="${esc(x.name)}" data-group="${esc(x.group)}"><span class="pick-name">${esc(x.name)}</span><span class="pick-sub">${inS.has(keyOf(x.name)) ? "Déjà dans la séance" : x.rec != null ? "Record " + esc(fmtW(x.rec)) : esc(x.group)}</span></button>`;
+  if (S.pickCreate) return `<p class="muted">Dans quel groupe ranger « ${esc(S.pickCreate)} » ?</p><div class="chips">${GROUPS.map(g => `<button class="chip-btn" data-act="create-group" data-group="${esc(g)}">${esc(g)}</button>`).join("")}</div><button class="link-btn" data-act="create-cancel">${ICON.left}<span>Retour à la liste</span></button>`;
+  const q = S.pickQ.trim();
+  if (q) {
+    const nq = norm(q);
+    const res = [...known.values()].filter(x => norm(x.name).includes(nq)).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    let h = res.map(item).join("");
+    if (!known.has(keyOf(q))) h += `<button class="pick pick-create" data-act="create-ex"><span class="pick-name">Créer « ${esc(q)} »</span><span class="pick-sub">Nouvel exercice</span></button>`;
+    return h;
+  }
+  let h = "";
+  const rec = [...S.IDX.values()].sort((a, b) => lastDate(b).localeCompare(lastDate(a))).slice(0, 6);
+  if (rec.length) h += `<h3 class="pk-h">Récents</h3>` + rec.map(r => item(known.get(keyOf(r.name)))).join("");
+  const prog = S.draft ? progOf(S.draft.name) : null;
+  const order = prog ? [...prog.groups, ...GROUPS.filter(g => !prog.groups.includes(g))] : GROUPS;
+  for (const g of order) {
+    const arr = [...known.values()].filter(x => x.group === g).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    if (arr.length) h += `<h3 class="pk-h">${esc(g)}</h3>` + arr.map(item).join("");
+  }
+  return h;
+}
+function openPicker(){
+  S.pickQ = ""; S.pickCreate = null;
+  openSheet(`<div class="sheet-head"><h2>Ajouter un exercice</h2><button class="icon-btn" data-act="sheet-close" aria-label="Fermer">${ICON.x}</button></div>
+    <input id="pk-q" class="input" type="search" placeholder="Rechercher ou créer un exercice" autocomplete="off" enterkeyhint="search" aria-label="Rechercher un exercice">
+    <div id="pk-list" class="pk-list">${pickerList()}</div>`, "Ajouter un exercice");
+}
+function openSheet(html, label){
+  $("#sheet-body").innerHTML = html; $("#sheet").setAttribute("aria-label", label || "Panneau");
+  $("#sheet").hidden = false; $("#sheet-back").hidden = false;
+  document.documentElement.classList.add("lock");
+  $("#sheet-body").scrollTop = 0;
+}
+function closeSheet(){ $("#sheet").hidden = true; $("#sheet-back").hidden = true; document.documentElement.classList.remove("lock"); S.lineData = null; }
+
+/* History */
+function histHTML(){
+  const L = S.L;
+  const first = L.length ? L[L.length - 1].date : null;
+  let h = `<header class="page-head"><h1>Historique</h1><p class="num">${loadingNow() ? "Chargement…" : L.length ? `${plural(L.length, "séance")} depuis le ${esc(fmtDate(first, {day: "numeric", month: "long", year: "numeric"}))}` : "Aucune séance pour l'instant"}</p></header>
+  <div class="seg" role="tablist"><button role="tab" data-act="hist-mode" data-mode="seances" aria-selected="${S.histMode === "seances"}">Séances</button><button role="tab" data-act="hist-mode" data-mode="exercices" aria-selected="${S.histMode === "exercices"}">Exercices</button></div>`;
+  if (!L.length) return h + (loadingNow() ? "" : `<div class="empty"><b>Rien à afficher</b><p>Tes séances apparaîtront ici, classées par mois.</p></div>`);
+  if (S.histMode === "seances") {
+    const groups = new Map();
+    for (const s of L) { const m = s.date.slice(0, 7); if (!groups.has(m)) groups.set(m, []); groups.get(m).push(s); }
+    for (const [m, arr] of groups) {
+      const vol = arr.reduce((a, s) => a + stats(s).vol, 0);
+      h += `<section class="sec"><h2 class="month-h">${esc(monthLabel(m))}<span class="num">${plural(arr.length, "séance")} · ${fmtVol(vol)}</span></h2><div class="s-list">${arr.map(sessionRow).join("")}</div></section>`;
+    }
+  } else {
+    h += `<input id="hist-q" class="input" type="search" placeholder="Rechercher un exercice" autocomplete="off" value="${esc(S.histQ)}" aria-label="Rechercher un exercice"><div id="hist-list">${exListHTML()}</div>`;
+  }
+  return h;
+}
+function exListHTML(){
+  const q = norm(S.histQ.trim());
+  const arr = [...S.IDX.entries()].filter(([, r]) => !q || norm(r.name).includes(q)).sort((a, b) => lastDate(b[1]).localeCompare(lastDate(a[1])));
+  if (!arr.length) return `<p class="muted">Aucun exercice ne correspond.</p>`;
+  return `<div class="s-list">${arr.map(([k, r]) => {
+    const rec = r.entries.reduce((b, x) => x.top != null && (b === null || x.top > b) ? x.top : b, null);
+    return `<button class="x-row" data-act="ex-detail" data-key="${esc(k)}"><span><span class="x-name">${esc(r.name)}</span><span class="x-sub">${esc(r.group)} · ${plural(r.entries.length, "séance")} · ${esc(fmtDate(lastDate(r), {day: "numeric", month: "short"}))}</span></span><span class="x-rec num">${esc(fmtW(rec))}</span><span class="chev">${ICON.right}</span></button>`;
+  }).join("")}</div>`;
+}
+function openExDetail(key){
+  const r = S.IDX.get(key); if (!r) return;
+  const en = r.entries;
+  const rec = en.reduce((b, x) => (b === null || (x.top || 0) > (b.top || 0)) ? x : b, null);
+  const bodyweight = !(rec.top > 0);
+  const e1 = Math.max(...en.map(x => x.e1 || 0));
+  const pts = en.slice(-20).map(x => ({v: bodyweight ? Math.max(...x.sets.map(s => s.reps)) : x.top, date: x.date, sets: x.sets}));
+  S.lineData = {pts, unit: bodyweight ? "reps" : "kg"};
+  const sel = pts.length - 1;
+  openSheet(`<div class="sheet-head"><div><p class="eyebrow">${esc(r.group)}</p><h2>${esc(r.name)}</h2></div><button class="icon-btn" data-act="sheet-close" aria-label="Fermer">${ICON.x}</button></div>
+    <div class="tiles">
+      <div class="tile"><small>Record</small><b class="num">${bodyweight ? esc(Math.max(...en.map(x => Math.max(...x.sets.map(s => s.reps))))) + " reps" : esc(fmtW(rec.top))}</b><span>${esc(fmtDate(rec.date, {day: "numeric", month: "short"}))}</span></div>
+      <div class="tile"><small>1RM estimé</small><b class="num">${e1 > 0 ? nf0.format(e1) + " kg" : "—"}</b><span class="num">${e1 > 0 && curWeight() ? nfKg.format(Math.round(e1 / curWeight() * 100) / 100) + " × ton poids" : "formule d'Epley"}</span></div>
+      <div class="tile"><small>Séances</small><b class="num">${en.length}</b><span>depuis le ${esc(fmtDate(en[0].date, {day: "numeric", month: "short"}))}</span></div>
+    </div>
+    <section class="sec"><h3 class="sec-title">${bodyweight ? "Reps max par séance" : "Charge max par séance (kg)"}</h3>
+      <p class="readout num" id="line-readout">${lineReadout(sel)}</p>
+      ${lineSVG(pts, sel, bodyweight)}
+    </section>
+    <section class="sec"><h3 class="sec-title">Toutes les séances</h3><ul class="ex-hist">${en.slice().reverse().map(x => `<li><span>${esc(fmtDate(x.date, {weekday: "short", day: "numeric", month: "short"}))}</span><span class="num">${esc(summary(x.sets))}</span></li>`).join("")}</ul></section>`, r.name);
+}
+function lineReadout(i){
+  const L = S.lineData; if (!L || !L.pts[i]) return "";
+  const p = L.pts[i];
+  return `${esc(cap(fmtDate(p.date, {weekday: "short", day: "numeric", month: "short"})))} · <b>${L.unit === "kg" ? esc(fmtW(p.v)) : esc(p.v) + " reps"}</b> <span>· ${esc(summary(p.sets))}</span>`;
+}
+
+/* Calendar */
+function calHTML(){
+  const m = S.calMonth, [y, mo] = m.split("-").map(Number);
+  const first = new Date(y, mo - 1, 1), dim = new Date(y, mo, 0).getDate(), lead = (first.getDay() + 6) % 7;
+  const by = byDate(S.L), t = todayStr();
+  const inM = S.L.filter(s => s.date.startsWith(m));
+  const dayCount = new Set(inM.map(s => s.date)).size;
+  let cells = "";
+  for (let i = 0; i < lead; i++) cells += `<span class="day-blank"></span>`;
+  for (let d = 1; d <= dim; d++) {
+    const ds = `${m}-${pad(d)}`, arr = by.get(ds) || [];
+    const label = arr.length > 1 ? "×" + arr.length : arr.length ? shortName(arr[0].name) : "";
+    cells += `<button class="day${arr.length ? " has" : ""}${ds === t ? " today" : ""}${ds > t ? " future" : ""}${ds === S.calDay ? " sel" : ""}" data-act="cal-day" data-day="${ds}" aria-label="${esc(fmtDate(ds, {weekday: "long", day: "numeric", month: "long"}))}${arr.length ? " : " + esc(arr.map(s => s.name).join(", ")) : ""}"${ds === S.calDay ? ' aria-pressed="true"' : ""}><span class="dn num">${d}</span>${label ? `<span class="dl">${esc(label)}</span>` : ""}</button>`;
+  }
+  let h = `<header class="mhead"><button class="round-btn" data-act="cal-prev" aria-label="Mois précédent">${ICON.left}</button><div class="mtitle"><p class="eyebrow">Calendrier</p><h1>${esc(monthLabel(m))}</h1></div><button class="round-btn" data-act="cal-next" aria-label="Mois suivant">${ICON.right}</button></header>
+  <p class="cal-sum num">${loadingNow() ? "Chargement…" : `${plural(inM.length, "séance")} · ${plural(dayCount, "jour")} d'entraînement`}</p>
+  <div class="cal"><div class="cal-wd" aria-hidden="true">${["L","M","M","J","V","S","D"].map(x => `<span>${x}</span>`).join("")}</div><div class="cal-grid">${cells}</div></div>`;
+  const sel = S.calDay && S.calDay.startsWith(m) ? S.calDay : null;
+  if (sel) {
+    const arr = by.get(sel) || [];
+    h += `<section class="sec"><h2 class="sec-title">${esc(cap(fmtDate(sel, {weekday: "long", day: "numeric", month: "long"})))}</h2>
+      ${arr.length ? `<div class="s-list">${arr.map(sessionRow).join("")}</div>` : `<p class="muted">Aucune séance ce jour-là.</p>`}
+      ${S.canWrite ? `<button class="btn btn-quiet" data-act="cal-new">+ Séance le ${esc(fmtDate(sel, {day: "numeric", month: "short"}))}</button>` : ""}</section>`;
+  } else h += `<p class="muted">Touche un jour pour voir ses séances.</p>`;
+  return h;
+}
+
+/* Monthly recap */
+function recapData(m){
+  const L = S.L, t = new Date(), cur = m === thisMonth(), pm = addMonths(m, -1);
+  const inM = L.filter(s => s.date.startsWith(m) && stats(s).sets > 0);
+  let prev, prevLabel;
+  if (cur) {
+    const [py, pmo] = pm.split("-").map(Number);
+    const lim = Math.min(t.getDate(), new Date(py, pmo, 0).getDate());
+    prev = L.filter(s => s.date.startsWith(pm) && Number(s.date.slice(8)) <= lim && stats(s).sets > 0);
+    prevLabel = `vs 1–${lim} ${monthShort(pm)}`;
+  } else { prev = L.filter(s => s.date.startsWith(pm) && stats(s).sets > 0); prevLabel = `vs ${monthShort(pm)}`; }
+  const agg = list => list.reduce((a, s) => { const st = stats(s); a.n++; a.vol += st.vol; a.sets += st.sets; a.reps += st.reps; return a; }, {n: 0, vol: 0, sets: 0, reps: 0});
+  const A = agg(inM), B = agg(prev);
+  // weeks
+  const [y, mo] = m.split("-").map(Number), first = new Date(y, mo - 1, 1), lastD = new Date(y, mo, 0);
+  const endLimit = cur ? new Date(t.getFullYear(), t.getMonth(), t.getDate()) : lastD;
+  const weeks = [];
+  for (let w = mondayOf(first); w <= endLimit; w.setDate(w.getDate() + 7)) {
+    const a = new Date(Math.max(w.getTime(), first.getTime()));
+    const we = new Date(w); we.setDate(we.getDate() + 6);
+    const b = new Date(Math.min(we.getTime(), lastD.getTime()));
+    const as = ymd(a), bs = ymd(b);
+    const ss = inM.filter(s => s.date >= as && s.date <= bs);
+    weeks.push({a: as, b: bs, label: a.getDate() === b.getDate() ? String(a.getDate()) : `${a.getDate()}–${b.getDate()}`, v: ss.reduce((x, s) => x + stats(s).vol, 0), n: ss.length});
+  }
+  // groups
+  const g = new Map();
+  for (const s of inM) for (const e of s.exercises || []) { const n = validSets(e).length; if (!n) continue; const k = e.group || groupOf(e.name); g.set(k, (g.get(k) || 0) + n); }
+  const groups = [...g.entries()].sort((a, b) => b[1] - a[1]);
+  // records & top exercises
+  const start = m + "-01", recs = [], tops = [];
+  for (const [, r] of S.IDX) {
+    const inside = r.entries.filter(x => x.date.startsWith(m));
+    if (!inside.length) continue;
+    const before = r.entries.filter(x => x.date < start);
+    const bestIn = inside.reduce((b, x) => (b === null || (x.top || 0) > (b.top || 0)) ? x : b, null);
+    const prevMax = before.length ? Math.max(...before.map(x => x.top || 0)) : null;
+    if (prevMax !== null && (bestIn.top || 0) > prevMax) recs.push({name: r.name, top: bestIn.top, date: bestIn.date, prev: prevMax, reps: Math.max(...bestIn.sets.filter(s => (s.kg || 0) === bestIn.top).map(s => s.reps))});
+    tops.push({name: r.name, vol: inside.reduce((a, x) => a + x.vol, 0), sets: inside.reduce((a, x) => a + x.sets.length, 0)});
+  }
+  recs.sort((a, b) => (b.top - b.prev) / (b.prev || 1) - (a.top - a.prev) / (a.prev || 1));
+  tops.sort((a, b) => b.vol - a.vol);
+  const days = new Set(inM.map(s => s.date)).size;
+  const nameCount = new Map(); for (const s of inM) nameCount.set(s.name, (nameCount.get(s.name) || 0) + 1);
+  const fav = [...nameCount.entries()].sort((a, b) => b[1] - a[1])[0];
+  const biggest = inM.reduce((b, s) => (!b || stats(s).vol > stats(b).vol) ? s : b, null);
+  const spanDays = cur ? t.getDate() : lastD.getDate();
+  return {A, B, prevLabel, weeks, groups, recs, tops: tops.filter(x => x.vol > 0).slice(0, 5), days, fav, biggest, spanDays, cur};
+}
+function deltaHTML(a, b, label, pct){
+  if (a === b) return `<span class="k-delta">= ${esc(label)}</span>`;
+  if (b === 0) return `<span class="k-delta up">▲ ${esc(label)} : 0</span>`;
+  const diff = pct ? Math.round((a - b) / b * 100) : a - b;
+  if (diff === 0) return `<span class="k-delta">= ${esc(label)}</span>`;
+  const txt = pct ? `${diff > 0 ? "+" : "−"}${nf0.format(Math.abs(diff))} %` : `${diff > 0 ? "+" : "−"}${nf0.format(Math.abs(diff))}`;
+  return `<span class="k-delta${diff > 0 ? " up" : ""}">${diff > 0 ? "▲" : "▼"} ${txt} ${esc(label)}</span>`;
+}
+function recapHTML(){
+  const m = S.recapMonth, R = recapData(m);
+  let h = `<header class="mhead"><button class="round-btn" data-act="recap-prev" aria-label="Mois précédent">${ICON.left}</button><div class="mtitle"><p class="eyebrow">Récap du mois</p><h1>${esc(monthLabel(m))}</h1></div><button class="round-btn" data-act="recap-next" aria-label="Mois suivant"${m >= thisMonth() ? " disabled" : ""}>${ICON.right}</button></header>`;
+  if (!R.A.n) {
+    S.barData = null;
+    return h + (loadingNow() ? `<p class="muted">Chargement…</p>` : `<div class="empty"><b>Aucune séance en ${esc(monthName(m))}</b><p>${m === thisMonth() ? "Ta première séance du mois lancera le récap." : "Navigue vers un autre mois avec les flèches."}</p>${m === thisMonth() && S.canWrite ? `<button class="btn btn-primary" data-act="tab" data-tab="seance">Démarrer une séance</button>` : ""}</div>`);
+  }
+  const {A, B} = R, tonnes = A.vol >= 1000;
+  h += `<div class="kpis">
+    <div class="kpi"><span class="k-label">Séances</span><span class="k-val num">${A.n}</span>${deltaHTML(A.n, B.n, R.prevLabel)}</div>
+    <div class="kpi"><span class="k-label">Tonnage</span><span class="k-val num">${tonnes ? nf1.format(A.vol / 1000) : nf0.format(A.vol)}<small>${tonnes ? "t" : "kg"}</small></span>${deltaHTML(A.vol, B.vol, R.prevLabel, true)}</div>
+    <div class="kpi"><span class="k-label">Séries</span><span class="k-val num">${A.sets}</span>${deltaHTML(A.sets, B.sets, R.prevLabel)}</div>
+    <div class="kpi"><span class="k-label">Répétitions</span><span class="k-val num">${nf0.format(A.reps)}</span>${deltaHTML(A.reps, B.reps, R.prevLabel, true)}</div>
+  </div>`;
+  S.barData = R.weeks;
+  let sel = R.weeks.length - 1; while (sel > 0 && !R.weeks[sel].v) sel--;
+  h += `<section class="sec"><h2 class="sec-title">Tonnage par semaine</h2><p class="readout num" id="bar-readout">${barReadout(sel)}</p>${barSVG(R.weeks, sel)}</section>`;
+  if (R.groups.length) {
+    const max = R.groups[0][1];
+    h += `<section class="sec"><h2 class="sec-title">Groupes musculaires</h2><div class="gbars">${R.groups.map(([g, n]) => `<div class="gbar"><span class="g-name">${esc(g)}</span><span class="g-track"><i style="width:${Math.max(3, n / max * 100).toFixed(1)}%"></i></span><span class="g-val num">${plural(n, "série")}</span></div>`).join("")}</div></section>`;
+  }
+  h += `<section class="sec"><h2 class="sec-title">Records du mois</h2>${R.recs.length ? `<ul class="rec-list">${R.recs.map(r => `<li><span class="rec-badge">PR</span><span class="rec-main"><b>${esc(r.name)}</b><small class="num">le ${esc(fmtDate(r.date, {day: "numeric", month: "short"}))} · avant : ${esc(fmtW(r.prev))}</small></span><span class="rec-val num">${esc(fmtW(r.top))} × ${r.reps}</span></li>`).join("")}</ul>` : `<p class="muted">Pas de nouveau record ce mois-ci. Les records comparent ta charge max à celle des mois précédents.</p>`}</section>`;
+  if (R.tops.length) h += `<section class="sec"><h2 class="sec-title">Exercices les plus chargés</h2><ul class="top-list">${R.tops.map((x, i) => `<li><span class="rank num">${i + 1}</span><span class="rec-main"><b>${esc(x.name)}</b><small>${plural(x.sets, "série")}</small></span><span class="rec-val num">${fmtVol(x.vol)}</span></li>`).join("")}</ul></section>`;
+  const perWeek = A.n / (R.spanDays / 7);
+  h += `<section class="sec"><h2 class="sec-title">Régularité</h2><dl class="facts">
+    <div class="fact"><dt>Jours d'entraînement</dt><dd class="num">${R.days} sur ${R.spanDays}${R.cur ? " (à ce jour)" : ""}</dd></div>
+    <div class="fact"><dt>Rythme moyen</dt><dd class="num">${nf1.format(perWeek)} séance${perWeek >= 2 ? "s" : ""} / semaine</dd></div>
+    <div class="fact"><dt>Séance la plus fréquente</dt><dd>${esc(R.fav[0])} × ${R.fav[1]}</dd></div>
+    <div class="fact"><dt>Plus grosse séance</dt><dd class="num">${esc(R.biggest.name)}, ${esc(fmtDate(R.biggest.date, {day: "numeric", month: "short"}))} · ${fmtVol(stats(R.biggest).vol)}</dd></div>
+  </dl></section>`;
+  const wm = weights().filter(x => x.date.startsWith(m));
+  if (wm.length) {
+    const a = wm[0], z = wm[wm.length - 1], dv = Math.round((z.weight - a.weight) * 10) / 10;
+    h += `<section class="sec"><h2 class="sec-title">Corps</h2><dl class="facts">
+      <div class="fact"><dt>Dernière pesée</dt><dd class="num">${nfKg.format(z.weight)} kg, ${esc(fmtDate(z.date, {day: "numeric", month: "short"}))}</dd></div>
+      <div class="fact"><dt>Évolution du mois</dt><dd class="num">${wm.length > 1 ? `${dv > 0 ? "▲ +" : dv < 0 ? "▼ −" : "= "}${nfKg.format(Math.abs(dv))} kg` : "Une seule pesée"} <span class="muted">(${plural(wm.length, "pesée")})</span></dd></div>
+    </dl></section>`;
+  }
+  return h;
+}
+function barReadout(i){
+  const w = S.barData && S.barData[i]; if (!w) return "";
+  const range = w.a === w.b ? `Le ${fmtDate(w.a, {day: "numeric", month: "short"})}` : `Du ${fmtDate(w.a, {day: "numeric"})} au ${fmtDate(w.b, {day: "numeric", month: "short"})}`;
+  return `${esc(range)} · <b>${fmtVol(w.v)}</b> <span>· ${plural(w.n, "séance")}</span>`;
+}
+
+/* ---------- Charts ---------- */
+function niceStep(x){ if (!(x > 0)) return 1; const e = Math.pow(10, Math.floor(Math.log10(x))), f = x / e; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * e; }
+const axisVol = v => v === 0 ? "0" : v >= 1000 ? nf1.format(v / 1000) + " t" : nf0.format(v);
+function barSVG(data, sel){
+  const W = 340, H = 178, pl = 42, pr = 4, pt = 10, pb = 26, iw = W - pl - pr, ih = H - pt - pb;
+  const max = Math.max(0, ...data.map(d => d.v));
+  const step = niceStep((max || 1000) / 3), top = Math.max(step, Math.ceil(max / step) * step);
+  const y = v => pt + ih - (v / top) * ih;
+  let g = "";
+  for (let k = 0; k * step <= top + 1e-9; k++) { const v = k * step, yy = y(v).toFixed(1); g += `<line class="${k ? "grid" : "base"}" x1="${pl}" x2="${W - pr}" y1="${yy}" y2="${yy}"/><text class="axis" x="${pl - 8}" y="${(+yy + 4).toFixed(1)}" text-anchor="end">${axisVol(v)}</text>`; }
+  const band = iw / data.length, bw = Math.min(38, band * 0.62);
+  let bars = "", labels = "", hits = "";
+  data.forEach((d, i) => {
+    const x = pl + band * i + (band - bw) / 2, h = (d.v / top) * ih;
+    if (h > 0) { const r = Math.min(4, h, bw / 2), y0 = pt + ih, y1 = y0 - h; bars += `<path class="bar${i === sel ? " on" : ""}" data-bi="${i}" d="M${x.toFixed(1)},${y0} V${(y1 + r).toFixed(1)} Q${x.toFixed(1)},${y1.toFixed(1)} ${(x + r).toFixed(1)},${y1.toFixed(1)} H${(x + bw - r).toFixed(1)} Q${(x + bw).toFixed(1)},${y1.toFixed(1)} ${(x + bw).toFixed(1)},${(y1 + r).toFixed(1)} V${y0} Z"/>`; }
+    labels += `<text class="axis${i === sel ? " on" : ""}" data-li="${i}" x="${(pl + band * i + band / 2).toFixed(1)}" y="${H - 7}" text-anchor="middle">${esc(d.label)}</text>`;
+    hits += `<rect class="hit" data-act="bar" data-i="${i}" x="${(pl + band * i).toFixed(1)}" y="0" width="${band.toFixed(1)}" height="${H}"><title>${esc(d.label)} : ${fmtVol(d.v)}</title></rect>`;
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tonnage par semaine : ${esc(data.map(d => d.label + " " + fmtVol(d.v)).join(", "))}">${g}${bars}${labels}${hits}</svg>`;
+}
+function lineSVG(pts, sel, intOnly, kind){
+  const W = 340, H = 184, pl = 40, pr = 14, pt = 14, pb = 26, iw = W - pl - pr, ih = H - pt - pb;
+  const vs = pts.map(p => p.v);
+  let mn = Math.min(...vs), mx = Math.max(...vs);
+  if (mx === mn) { mn = Math.max(0, mn - 5); mx = mx + 5; }
+  const step = intOnly ? Math.max(1, Math.round(niceStep((mx - mn) / 3))) : niceStep((mx - mn) / 3), lo = Math.floor(mn / step) * step, hi = Math.max(lo + step, Math.ceil(mx / step) * step);
+  const x = i => pts.length === 1 ? pl + iw / 2 : pl + i * iw / (pts.length - 1);
+  const y = v => pt + ih - ((v - lo) / (hi - lo)) * ih;
+  let g = "";
+  for (let k = 0; lo + k * step <= hi + 1e-9; k++) { const v = lo + k * step, yy = y(v).toFixed(1); g += `<line class="${k ? "grid" : "base"}" x1="${pl}" x2="${W - pr}" y1="${yy}" y2="${yy}"/><text class="axis" x="${pl - 8}" y="${(+yy + 4).toFixed(1)}" text-anchor="end">${nf1.format(v)}</text>`; }
+  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(" ");
+  const area = pts.length > 1 ? `<path class="area" d="${line} L${x(pts.length - 1).toFixed(1)},${pt + ih} L${x(0).toFixed(1)},${pt + ih} Z"/>` : "";
+  const dots = pts.map((p, i) => `<circle class="pt${i === sel ? " on" : ""}" data-pi="${i}" cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="${i === sel ? 6 : 4}"/>`).join("");
+  const hits = pts.map((p, i) => `<circle class="hit" data-act="pt" data-i="${i}" cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="16"/>`).join("");
+  const fl = `<text class="axis" x="${x(0).toFixed(1)}" y="${H - 7}" text-anchor="${pts.length > 1 ? "start" : "middle"}">${esc(fmtDate(pts[0].date, {day: "numeric", month: "short"}))}</text>` + (pts.length > 1 ? `<text class="axis" x="${x(pts.length - 1).toFixed(1)}" y="${H - 7}" text-anchor="end">${esc(fmtDate(pts[pts.length - 1].date, {day: "numeric", month: "short"}))}</text>` : "");
+  return `<svg class="chart" data-kind="${kind || "ex"}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${kind === "weight" ? "Évolution du poids sur " + pts.length + " pesées" : "Progression sur " + pts.length + " séances"}"><defs><linearGradient id="cdf-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--red);stop-opacity:.32"/><stop offset="1" style="stop-color:var(--red);stop-opacity:0"/></linearGradient></defs>${g}${area}<path class="line" d="${line}"/>${dots}${fl}${hits}</svg>`;
+}
+
+/* ---------- Toast & confirm ---------- */
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(S.toastT); S.toastT = setTimeout(() => { t.hidden = true; }, 3200); }
+function arm(key){ S.confirm = key; clearTimeout(S.confirmT); S.confirmT = setTimeout(() => { S.confirm = null; render(); }, 4000); render(); }
+
+/* ---------- Navigation ---------- */
+function go(tab){ if (location.hash !== "#" + tab) { S.tab = tab; try { history.replaceState(null, "", "#" + tab); } catch (e) { location.hash = tab; } } else S.tab = tab; }
+window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (TABS.some(x => x.id === t) && t !== S.tab) { S.tab = t; closeSheet(); render(); window.scrollTo(0, 0); } });
+
+/* ---------- Events ---------- */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const a = b.dataset.act, d = S.draft;
+  const ei = b.dataset.e != null ? +b.dataset.e : null, si = b.dataset.s != null ? +b.dataset.s : null;
+  switch (a) {
+    case "tab": {
+      const t = b.dataset.tab;
+      if (t === S.tab) { window.scrollTo({top: 0, behavior: "smooth"}); return; }
+      S.tab = t; try { history.pushState(null, "", "#" + t); } catch (err) {}
+      closeSheet(); render(); window.scrollTo(0, 0); return;
+    }
+    case "start": startSession(b.dataset.name); return;
+    case "start-custom": { const n = ($("#custom-name") || {}).value || ""; if (!n.trim()) { toast("Donne un nom à ta séance."); $("#custom-name").focus(); return; } startSession(n); return; }
+    case "open": openSession(b.dataset.id); return;
+    case "close": closeDraft(false); render(); window.scrollTo(0, 0); return;
+    case "finish": {
+      const st = stats(d);
+      const res = closeDraft(true);
+      render(); window.scrollTo(0, 0);
+      toast(res === "empty" ? "Séance vide : rien n'a été gardé." : `Séance enregistrée · ${plural(st.sets, "série")} · ${fmtVol(st.vol)}`);
+      return;
+    }
+    case "del-session": {
+      if (S.confirm !== "del-session") { arm("del-session"); return; }
+      S.confirm = null; const id = d.id; S.draft = null; remember(null);
+      if (S.sessions.has(id) || pending.has(id)) removeDoc(id);
+      render(); window.scrollTo(0, 0); toast("Séance supprimée"); return;
+    }
+    case "add-ex": openPicker(); return;
+    case "rest-minus": R.end -= 15000; R.total = Math.max(R.total, R.end - Date.now()); tickRest(); return;
+    case "rest-plus": R.end += 15000; R.total = Math.max(R.total, R.end - Date.now()); tickRest(); return;
+    case "rest-stop": stopRest(); return;
+    case "edit-profile": openProfile(); return;
+    case "pf-goal": S.pf.goal = S.pf.goal === b.dataset.v ? "" : b.dataset.v; b.parentElement.querySelectorAll("[data-act=pf-goal]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.v === S.pf.goal))); return;
+    case "pf-rest": S.pf.rest = +b.dataset.v; b.parentElement.querySelectorAll("[data-act=pf-rest]").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.v === S.pf.rest))); return;
+    case "save-profile": saveProfile(); return;
+    case "toggle-meas": S.measOpen = !S.measOpen; render(); return;
+    case "export-data": exportData(); return;
+    case "import-data": { const f = $("#import-file"); if (f) { f.value = ""; f.click(); } return; }
+    case "import-cancel": S.importPending = null; render(); return;
+    case "import-confirm": {
+      const P = S.importPending; S.importPending = null;
+      try { S.db.replace(P.docs); } catch (e) { toast("Import impossible : stockage du téléphone plein."); render(); return; }
+      S.draft = null; remember(null); render(); toast("Sauvegarde importée"); return;
+    }
+    case "add-weight": addWeight(); return;
+    case "del-weight": {
+      const id = b.dataset.id;
+      if (S.confirm !== "w" + id) { arm("w" + id); return; }
+      S.confirm = null; S.body = S.body.filter(x => x.id !== id); render();
+      S.db.collection("body").doc(id).delete().catch(() => toast("Suppression impossible pour l'instant. Réessaie dans un instant."));
+      return;
+    }
+    case "save-type": {
+      const name = (d.name || "").trim() || "Séance";
+      const ex = d.exercises.map(e => { const v = validSets(e), rows = v.length ? v : (e.sets || []); return {name: e.name, group: e.group || groupOf(e.name), sets: rows.map(x => ({kg: x.kg ?? x.pk ?? null, reps: x.reps ?? x.pr ?? null}))}; }).filter(e => e.sets.length);
+      if (!ex.length) { toast("Ajoute au moins un exercice avant d'enregistrer ta séance type."); return; }
+      const id = tplId(name), body = {name, exercises: ex, updatedAt: Date.now()}, had = !!getTpl(name);
+      S.templates.set(id, body); render();
+      S.db.collection("templates").doc(id).set(body)
+        .then(() => toast(`Séance type « ${name} » ${had ? "mise à jour" : "enregistrée"} · ${plural(ex.length, "exercice")}`))
+        .catch(() => toast("Séance type non enregistrée. Vérifie ta connexion et réessaie."));
+      return;
+    }
+    case "add-set": {
+      const ex = d.exercises[ei], last = ex.sets[ex.sets.length - 1];
+      ex.sets.push({kg: null, reps: null, pk: last ? (last.kg ?? last.pk ?? null) : null, pr: last ? (last.reps ?? last.pr ?? null) : null});
+      queueSave(d); render(); return;
+    }
+    case "del-set": d.exercises[ei].sets.splice(si, 1); queueSave(d); render(); return;
+    case "check": {
+      const s = d.exercises[ei].sets[si];
+      if (s.reps > 0) return;
+      const kg = s.kg ?? s.pk, reps = s.reps ?? s.pr;
+      if (!(reps > 0)) { toast("Indique le nombre de répétitions."); const el = $(`#reps-${ei}-${si}`); if (el) el.focus(); return; }
+      s.kg = kg ?? 0; s.reps = reps;
+      const kgEl = $(`#kg-${ei}-${si}`), rEl = $(`#reps-${ei}-${si}`);
+      if (kgEl) kgEl.value = fmtIn(s.kg); if (rEl) rEl.value = fmtIn(s.reps);
+      if (navigator.vibrate) try { navigator.vibrate(12); } catch (err) {}
+      queueSave(d); refreshCard(ei);
+      startRest(); if (d.date === todayStr()) keepAwake(true);
+      return;
+    }
+    case "up-ex": { const arr = d.exercises; [arr[ei - 1], arr[ei]] = [arr[ei], arr[ei - 1]]; queueSave(d); render(); return; }
+    case "del-ex": if (S.confirm !== "ex" + ei) { arm("ex" + ei); return; } S.confirm = null; d.exercises.splice(ei, 1); queueSave(d); render(); return;
+    case "pick": addExercise(b.dataset.name, b.dataset.group); return;
+    case "create-ex": S.pickCreate = S.pickQ.trim(); $("#pk-list").innerHTML = pickerList(); return;
+    case "create-cancel": S.pickCreate = null; $("#pk-list").innerHTML = pickerList(); return;
+    case "create-group": addExercise(S.pickCreate.replace(/\s+/g, " "), b.dataset.group); S.pickCreate = null; return;
+    case "sheet-close": closeSheet(); return;
+    case "hist-mode": S.histMode = b.dataset.mode; render(); return;
+    case "ex-detail": openExDetail(b.dataset.key); return;
+    case "cal-prev": S.calMonth = addMonths(S.calMonth, -1); render(); return;
+    case "cal-next": S.calMonth = addMonths(S.calMonth, 1); render(); return;
+    case "cal-day": S.calDay = b.dataset.day; render(); return;
+    case "cal-new": if (S.draft) closeDraft(false); S.newDate = S.calDay; go("seance"); render(); window.scrollTo(0, 0); toast(`Choisis le type de séance du ${fmtDate(S.newDate, {day: "numeric", month: "long"})}`); return;
+    case "recap-prev": S.recapMonth = addMonths(S.recapMonth, -1); render(); return;
+    case "recap-next": if (S.recapMonth < thisMonth()) { S.recapMonth = addMonths(S.recapMonth, 1); render(); } return;
+    case "bar": {
+      const i = +b.dataset.i, svg = b.closest("svg");
+      svg.querySelectorAll(".bar").forEach(el => el.classList.toggle("on", +el.dataset.bi === i));
+      svg.querySelectorAll("[data-li]").forEach(el => el.classList.toggle("on", +el.dataset.li === i));
+      $("#bar-readout").innerHTML = barReadout(i); return;
+    }
+    case "pt": {
+      const i = +b.dataset.i, svg = b.closest("svg");
+      svg.querySelectorAll(".pt").forEach(el => { const on = +el.dataset.pi === i; el.classList.toggle("on", on); el.setAttribute("r", on ? 6 : 4); });
+      if (svg.dataset.kind === "weight") $("#w-readout").innerHTML = weightReadout(i); else $("#line-readout").innerHTML = lineReadout(i);
+      return;
+    }
+    case "clear-examples": {
+      if (S.confirm !== "examples") { arm("examples"); return; }
+      S.confirm = null; clearExamples(); return;
+    }
+  }
+});
+async function clearExamples(){
+  const ids = [...S.sessions.entries()].filter(([, v]) => v.example).map(([id]) => id);
+  if (S.draft && S.draft.example) { S.draft = null; remember(null); }
+  render();
+  for (const id of ids) { pending.delete(id); try { await S.col.doc(id).delete(); } catch (e) { toast("Effacement interrompu. Réessaie dans un instant."); return; } }
+  toast(`${plural(ids.length, "séance")} d'exemple effacée${ids.length > 1 ? "s" : ""}. À toi de jouer !`);
+}
+
+document.addEventListener("input", e => {
+  const t = e.target, d = S.draft;
+  if (t.dataset && t.dataset.meas) { S.meas[t.dataset.meas] = t.value; return; }
+  if (t.dataset && t.dataset.f && d) {
+    const s = d.exercises[+t.dataset.e] && d.exercises[+t.dataset.e].sets[+t.dataset.s]; if (!s) return;
+    const v = num(t.value);
+    s[t.dataset.f] = t.dataset.f === "reps" && v != null ? Math.round(v) : v;
+    queueSave(d); refreshCard(+t.dataset.e); return;
+  }
+  switch (t.id) {
+    case "ed-name": d.name = t.value; queueSave(d); return;
+    case "ed-date": if (t.value) { d.date = t.value; queueSave(d); renderTop(); } return;
+    case "ed-notes": d.notes = t.value; queueSave(d); return;
+    case "new-date": if (t.value) S.newDate = t.value; return;
+    case "w-date": if (t.value) S.wDate = t.value; return;
+    case "w-kg": S.wKg = t.value; return;
+    case "custom-name": S.customName = t.value; return;
+    case "hist-q": S.histQ = t.value; $("#hist-list").innerHTML = exListHTML(); return;
+    case "pk-q": S.pickQ = t.value; S.pickCreate = null; $("#pk-list").innerHTML = pickerList(); return;
+  }
+});
+document.addEventListener("change", e => {
+  const t = e.target, d = S.draft;
+  if (t.id === "import-file") { readImport(t); return; }
+  if (t.id === "ed-date" && d) { render(); return; }
+  if (!(t.dataset && t.dataset.f && d)) return;
+  const i = +t.dataset.e, j = +t.dataset.s, s = d.exercises[i] && d.exercises[i].sets[j]; if (!s) return;
+  let changed = false;
+  if (t.dataset.f === "kg" && s.kg != null && s.reps == null && s.pr != null) { s.reps = s.pr; const r = $(`#reps-${i}-${j}`); if (r) r.value = fmtIn(s.reps); changed = true; }
+  if (t.dataset.f === "reps" && s.reps > 0 && s.kg == null && s.pk != null) { s.kg = s.pk; const k = $(`#kg-${i}-${j}`); if (k) k.value = fmtIn(s.kg); changed = true; }
+  if (changed) { queueSave(d); refreshCard(i); }
+});
+document.addEventListener("keydown", e => {
+  const t = e.target;
+  if (e.key === "Escape" && !$("#sheet").hidden) { closeSheet(); return; }
+  if (e.key !== "Enter") return;
+  if (t.dataset && t.dataset.f) { e.preventDefault(); if (t.dataset.f === "kg") { const r = $(`#reps-${t.dataset.e}-${t.dataset.s}`); if (r) r.focus(); } else t.blur(); }
+  else if (t.id === "custom-name") { e.preventDefault(); if (t.value.trim()) startSession(t.value); }
+  else if (t.id === "pk-q") { e.preventDefault(); t.blur(); }
+  else if (t.id === "w-kg") { e.preventDefault(); addWeight(); }
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" && pending.size) { clearTimeout(S.saveT); flush(); }
+  if (document.visibilityState === "visible" && S.draft && S.draft.date === todayStr()) keepAwake(true);
+});
+setInterval(() => { if (S.draft) renderTop(); }, 30000);
+
+/* ---------- Corps ---------- */
+function corpsHTML(){
+  const P = S.profile || {}, W = weights(), cur = W[W.length - 1], ro = !S.canWrite;
+  const goal = (GOALS.find(g => g[0] === P.goal) || [])[1];
+  const hasProfile = P.height || P.birth || P.goal || P.target;
+  let h = `<header class="page-head"><h1>Corps</h1><p>Profil, poids et mensurations</p></header>`;
+  h += `<section class="sec"><div class="sec-row"><h2 class="sec-title">Profil</h2>${!ro && hasProfile ? `<button class="btn-mini" data-act="edit-profile">Modifier</button>` : ""}</div>`;
+  if (hasProfile) {
+    h += `<dl class="facts">
+      <div class="fact"><dt>Taille</dt><dd class="num">${P.height ? nf0.format(P.height) + " cm" : "—"}</dd></div>
+      <div class="fact"><dt>Âge</dt><dd class="num">${P.birth ? ageOf(P.birth) + " ans" : "—"}</dd></div>
+      <div class="fact"><dt>Objectif</dt><dd>${goal ? esc(goal) : "—"}</dd></div>
+      <div class="fact"><dt>Poids cible</dt><dd class="num">${P.target ? nfKg.format(P.target) + " kg" : "—"}</dd></div>
+      <div class="fact"><dt>Repos entre séries</dt><dd class="num">${fmtRest(P.rest || 90)}</dd></div>
+      <div class="fact"><dt>IMC</dt><dd class="num">${P.height && cur ? nf1.format(cur.weight / Math.pow(P.height / 100, 2)) : "—"}</dd></div>
+    </dl>`;
+  } else {
+    h += `<div class="empty"><b>Complète ton profil</b><p>Taille, âge, objectif et temps de repos : ils servent au calcul de l'IMC, de ta force par rapport à ton poids et au minuteur de repos.</p>${ro ? "" : `<button class="btn btn-primary" data-act="edit-profile">Compléter mon profil</button>`}</div>`;
+  }
+  h += `</section>`;
+
+  h += `<section class="sec"><h2 class="sec-title">Poids</h2>`;
+  if (cur) {
+    const chips = [];
+    const ref = new Date(parseYmd(cur.date)); ref.setDate(ref.getDate() - 30);
+    let base = null; for (const x of W) if (x.date <= ymd(ref)) base = x;
+    if (!base && W.length > 1) base = W[0];
+    if (base && base !== cur) { const dv = Math.round((cur.weight - base.weight) * 10) / 10; chips.push(`<span class="stat-chip num">${dv > 0 ? "▲ +" : dv < 0 ? "▼ −" : "= "}${nfKg.format(Math.abs(dv))} kg <span>depuis le ${esc(fmtDate(base.date, {day: "numeric", month: "short"}))}</span></span>`); }
+    if (P.target) { const r = Math.round((P.target - cur.weight) * 10) / 10; chips.push(`<span class="stat-chip num">Objectif ${nfKg.format(P.target)} kg : <b>${r === 0 ? "atteint" : (r > 0 ? "+" : "−") + nfKg.format(Math.abs(r)) + " kg"}</b></span>`); }
+    h += `<div class="w-hero"><span class="w-val num">${nfKg.format(cur.weight)}<small>kg</small></span><span class="w-meta">pesée du ${esc(fmtDate(cur.date, {weekday: "long", day: "numeric", month: "long"}))}</span></div>`;
+    if (chips.length) h += `<div class="w-chips">${chips.join("")}</div>`;
+    if (W.length > 1) {
+      S.wPts = W.slice(-30).map(x => ({v: x.weight, date: x.date}));
+      const sel = S.wPts.length - 1;
+      h += `<p class="readout num" id="w-readout">${weightReadout(sel)}</p>${lineSVG(S.wPts, sel, false, "weight")}`;
+    }
+  } else if (!ro) {
+    h += `<p class="muted">Note ta première pesée ci-dessous : ta courbe de poids apparaîtra dès la deuxième.</p>`;
+  } else h += `<p class="muted">Aucune pesée pour l'instant.</p>`;
+  if (!ro) {
+    h += `<div class="w-form">
+      <label class="date-pill" for="w-date"><span>Le</span><input id="w-date" type="date" value="${esc(S.wDate)}"></label>
+      <label class="kg-field" for="w-kg"><input id="w-kg" class="input num" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="${cur ? esc(fmtIn(cur.weight)) : "Poids"}" value="${esc(S.wKg)}" aria-label="Poids en kilos"><span>kg</span></label>
+      <button class="btn btn-primary" data-act="add-weight">Noter</button>
+    </div>
+    <button class="link-btn" data-act="toggle-meas" aria-expanded="${S.measOpen}">${S.measOpen ? "− Masquer les mensurations" : "+ Ajouter des mensurations"}</button>
+    ${S.measOpen ? `<div class="meas-grid">${MEAS.map(([k, label, unit]) => `<label for="m-${k}">${esc(label)} (${unit})<input id="m-${k}" data-meas="${k}" class="input num" inputmode="decimal" autocomplete="off" value="${esc(S.meas[k] || "")}"></label>`).join("")}</div>` : ""}`;
+  }
+  h += `</section>`;
+
+  const measRows = MEAS.map(([k, label, unit]) => {
+    const xs = S.body.filter(x => x[k] > 0); if (!xs.length) return "";
+    const a = xs[0], z = xs[xs.length - 1], dv = Math.round((z[k] - a[k]) * 10) / 10;
+    return `<div class="tile"><small>${esc(label)}</small><b class="num">${nfKg.format(z[k])} ${unit}</b><span class="num">${xs.length > 1 ? `${dv > 0 ? "▲ +" : dv < 0 ? "▼ −" : "= "}${nfKg.format(Math.abs(dv))} depuis le ${esc(fmtDate(a.date, {day: "numeric", month: "short"}))}` : esc(fmtDate(z.date, {day: "numeric", month: "short"}))}</span></div>`;
+  }).filter(Boolean);
+  if (measRows.length) h += `<section class="sec"><h2 class="sec-title">Mensurations</h2><div class="tiles2">${measRows.join("")}</div></section>`;
+
+  if (S.body.length) {
+    h += `<section class="sec"><h2 class="sec-title">Historique des pesées</h2><ul class="w-list">${S.body.slice().reverse().slice(0, 15).map(x => {
+      const ms = MEAS.filter(([k]) => x[k] > 0).map(([k, label, unit]) => `${label.replace("Tour de ", "").replace("Masse grasse", "MG")} ${nfKg.format(x[k])}${unit === "%" ? " %" : ""}`).join(" · ");
+      return `<li><span class="w-d">${esc(fmtDate(x.date, {day: "numeric", month: "short", year: "2-digit"}))}</span><span class="w-m"><b class="num">${x.weight > 0 ? nfKg.format(x.weight) + " kg" : "—"}</b>${ms ? `<small class="num">${esc(ms)}</small>` : ""}</span>${ro ? "<span></span>" : `<button class="icon-btn${S.confirm === "w" + x.id ? " armed" : ""}" data-act="del-weight" data-id="${esc(x.id)}" aria-label="Supprimer la pesée du ${esc(fmtDate(x.date, {day: "numeric", month: "long"}))}">${S.confirm === "w" + x.id ? "Supprimer ?" : ICON.trash}</button>`}</li>`;
+    }).join("")}</ul></section>`;
+  }
+  if (S.local) h += backupHTML();
+  return h;
+}
+function weightReadout(i){
+  const p = S.wPts && S.wPts[i]; if (!p) return "";
+  const prev = S.wPts[i - 1];
+  const dv = prev ? Math.round((p.v - prev.v) * 10) / 10 : null;
+  return `${esc(cap(fmtDate(p.date, {weekday: "short", day: "numeric", month: "short"})))} · <b>${nfKg.format(p.v)} kg</b>${dv !== null ? ` <span>· ${dv > 0 ? "+" : dv < 0 ? "−" : "±"}${nfKg.format(Math.abs(dv))} kg vs pesée précédente</span>` : ""}`;
+}
+function addWeight(){
+  if (!S.canWrite || !S.db) return;
+  const date = S.wDate || todayStr(), kg = num(S.wKg), meas = {};
+  for (const [k] of MEAS) { const v = num(S.meas[k]); if (v != null && v > 0) meas[k] = v; }
+  if (kg != null && (kg < 25 || kg > 300)) { toast("Indique un poids entre 25 et 300 kg."); return; }
+  if (kg == null && !Object.keys(meas).length) { toast("Indique ton poids ou au moins une mensuration."); const el = $("#w-kg"); if (el) el.focus(); return; }
+  const id = "d-" + date, prev = S.body.find(x => x.id === id) || {};
+  const entry = {...prev, date, ...(kg != null ? {weight: kg} : {}), ...meas, updatedAt: Date.now()};
+  delete entry.id;
+  S.body = S.body.filter(x => x.id !== id).concat([{...entry, id}]).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+  S.wKg = ""; S.meas = {}; S.measOpen = false; S.wDate = todayStr();
+  render();
+  S.db.collection("body").doc(id).set(entry)
+    .then(() => toast(kg != null ? `Pesée notée : ${nfKg.format(kg)} kg` : "Mensurations notées"))
+    .catch(() => toast("Pesée non enregistrée. Vérifie ta connexion et réessaie."));
+}
+function openProfile(){
+  const P = S.profile || {};
+  S.pf = {goal: P.goal || "", rest: P.rest || 90};
+  openSheet(`<div class="sheet-head"><h2>Mon profil</h2><button class="icon-btn" data-act="sheet-close" aria-label="Fermer">${ICON.x}</button></div>
+    <div class="form-grid">
+      <label class="field" for="pf-height"><span class="eyebrow">Taille (cm)</span><input id="pf-height" class="input num" inputmode="numeric" autocomplete="off" value="${esc(fmtIn(P.height))}" placeholder="178"></label>
+      <label class="field" for="pf-target"><span class="eyebrow">Poids cible (kg)</span><input id="pf-target" class="input num" inputmode="decimal" autocomplete="off" value="${esc(fmtIn(P.target))}" placeholder="Facultatif"></label>
+      <label class="field span2" for="pf-birth"><span class="eyebrow">Date de naissance</span><input id="pf-birth" class="input" type="date" value="${esc(P.birth || "")}"></label>
+    </div>
+    <div class="field"><span class="eyebrow">Objectif</span><div class="chips">${GOALS.map(([v, l]) => `<button class="chip-btn" data-act="pf-goal" data-v="${v}" aria-pressed="${S.pf.goal === v}">${esc(l)}</button>`).join("")}</div></div>
+    <div class="field"><span class="eyebrow">Repos entre les séries</span><div class="chips">${RESTS.map(v => `<button class="chip-btn" data-act="pf-rest" data-v="${v}" aria-pressed="${S.pf.rest === v}">${esc(fmtRest(v))}</button>`).join("")}</div><p class="muted">Le minuteur démarre quand tu valides une série avec ✓.</p></div>
+    <button class="btn btn-primary btn-block" data-act="save-profile">Enregistrer mon profil</button>`, "Mon profil");
+}
+function saveProfile(){
+  if (!S.canWrite || !S.db) return;
+  const height = num($("#pf-height").value), target = num($("#pf-target").value), birth = $("#pf-birth").value || "";
+  if (height != null && (height < 100 || height > 250)) { toast("Indique une taille entre 100 et 250 cm."); return; }
+  if (target != null && (target < 25 || target > 300)) { toast("Indique un poids cible entre 25 et 300 kg."); return; }
+  if (birth && (birth > todayStr() || birth < "1900-01-01")) { toast("Vérifie ta date de naissance."); return; }
+  const body = {height: height ?? null, target: target ?? null, birth, goal: S.pf.goal || "", rest: S.pf.rest || 90, updatedAt: Date.now()};
+  S.profile = body; closeSheet(); render();
+  S.db.doc("profile/main").set(body).then(() => toast("Profil enregistré")).catch(() => toast("Profil non enregistré. Vérifie ta connexion et réessaie."));
+}
+
+/* ---------- Rest timer & screen ---------- */
+const R = {end: 0, total: 0, t: null, done: false};
+let AC = null, WL = null;
+function unlockAudio(){ try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === "suspended") AC.resume(); } catch (e) { AC = null; } }
+function beep(){
+  if (!AC) return;
+  try { const t0 = AC.currentTime; [0, 0.28, 0.56].forEach((dt, i) => { const o = AC.createOscillator(), g = AC.createGain(); o.frequency.value = i === 2 ? 1320 : 880; o.connect(g); g.connect(AC.destination); g.gain.setValueAtTime(0.0001, t0 + dt); g.gain.exponentialRampToValueAtTime(0.35, t0 + dt + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dt + 0.2); o.start(t0 + dt); o.stop(t0 + dt + 0.22); }); } catch (e) {}
+}
+function startRest(){
+  const sec = (S.profile && S.profile.rest) || 90;
+  unlockAudio();
+  R.total = sec * 1000; R.end = Date.now() + R.total; R.done = false;
+  clearInterval(R.t); R.t = setInterval(tickRest, 250); tickRest();
+}
+function tickRest(){
+  const el = $("#rest"), left = R.end - Date.now();
+  el.hidden = false; document.documentElement.classList.add("resting");
+  if (left <= 0) {
+    if (!R.done) {
+      R.done = true; el.classList.add("over"); beep();
+      try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+      $("#rest-label").textContent = "Repos terminé"; $("#rest-time").textContent = "Go !"; $("#rest-bar").style.transform = "scaleX(0)";
+      clearInterval(R.t); R.t = setTimeout(stopRest, 5000);
+    }
+    return;
+  }
+  el.classList.remove("over");
+  const sc = Math.ceil(left / 1000);
+  $("#rest-label").textContent = "Repos";
+  $("#rest-time").textContent = `${Math.floor(sc / 60)}:${pad(sc % 60)}`;
+  $("#rest-bar").style.transform = `scaleX(${Math.max(0, Math.min(1, left / R.total))})`;
+}
+function stopRest(){ clearInterval(R.t); clearTimeout(R.t); R.t = null; $("#rest").hidden = true; document.documentElement.classList.remove("resting"); }
+async function keepAwake(on){
+  try {
+    if (on && !WL && navigator.wakeLock && document.visibilityState === "visible") { WL = await navigator.wakeLock.request("screen"); WL.addEventListener("release", () => { WL = null; }); }
+    else if (!on && WL) { const w = WL; WL = null; await w.release(); }
+  } catch (e) { WL = null; }
+}
+
+/* ---------- Local store (installed app) ---------- */
+function localDB(){
+  const KEY = "cdf.db.v1";
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { data = {}; }
+  const subs = new Set(), meta = {fromCache: false, hasPendingWrites: false};
+  const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(data)); return true; } catch (e) { return false; } };
+  const notify = () => setTimeout(() => subs.forEach(f => f()), 0);
+  const docSnap = p => ({id: p.split("/").pop(), exists: Object.prototype.hasOwnProperty.call(data, p), data: () => data[p], metadata: meta});
+  const children = c => Object.keys(data).filter(p => p.startsWith(c + "/") && p.split("/").length === c.split("/").length + 1);
+  const rid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  const docRef = p => ({
+    id: p.split("/").pop(), path: p,
+    async set(b){ const old = data[p]; data[p] = JSON.parse(JSON.stringify(b)); if (!persist()) { if (old === undefined) delete data[p]; else data[p] = old; throw {code: "quota_exceeded", message: "Stockage du téléphone plein"}; } notify(); },
+    async delete(){ delete data[p]; persist(); notify(); },
+    onSnapshot(next){ const f = () => next(docSnap(p)); subs.add(f); setTimeout(f, 0); return () => subs.delete(f); }
+  });
+  const colRef = c => ({
+    path: c, doc: id => docRef(c + "/" + (id || rid())),
+    onSnapshot(next){ const f = () => next({docs: children(c).map(docSnap), metadata: meta}); subs.add(f); setTimeout(f, 0); return () => subs.delete(f); }
+  });
+  window.addEventListener("storage", e => { if (e.key === KEY) { try { data = JSON.parse(e.newValue || "{}") || {}; } catch (err) {} subs.forEach(f => f()); } });
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
+  return {collection: colRef, doc: docRef, dump: () => JSON.parse(JSON.stringify(data)), replace(obj){ data = obj; if (!persist()) throw new Error("full"); subs.forEach(f => f()); }};
+}
+function backupHTML(){
+  const P = S.importPending;
+  const count = P ? Object.keys(P.docs).reduce((a, k) => { if (k.startsWith("sessions/")) a.s++; else if (k.startsWith("body/")) a.b++; return a; }, {s: 0, b: 0}) : null;
+  return `<section class="sec"><h2 class="sec-title">Sauvegarde</h2>
+    <p class="muted">Tes données sont enregistrées sur ce téléphone uniquement. Exporte une sauvegarde de temps en temps (dans Fichiers ou iCloud Drive) pour ne rien perdre si tu changes de téléphone.</p>
+    ${P ? `<div class="banner"><p>Sauvegarde du ${esc(P.exportedAt ? fmtDate(P.exportedAt.slice(0, 10), {day: "numeric", month: "long", year: "numeric"}) : "?")} : ${plural(count.s, "séance")}, ${plural(count.b, "pesée")}. Elle remplacera toutes les données actuelles.</p><div class="row-btns"><button class="btn-mini armed" data-act="import-confirm">Remplacer mes données</button><button class="btn-mini" data-act="import-cancel">Annuler</button></div></div>` : ""}
+    <div class="row-btns"><button class="btn btn-quiet" data-act="export-data">Exporter mes données</button><button class="btn btn-quiet" data-act="import-data">Importer</button></div>
+    <input id="import-file" type="file" accept="application/json,.json" hidden>
+    <p class="muted">${S.lastBackup ? "Dernière sauvegarde : " + esc(fmtDate(S.lastBackup, {day: "numeric", month: "long", year: "numeric"})) : "Aucune sauvegarde pour l'instant."}</p>
+  </section>`;
+}
+function markBackup(){ S.lastBackup = todayStr(); store("cdf.backup", S.lastBackup); render(); toast("Sauvegarde exportée"); }
+async function exportData(){
+  const payload = {app: "carnet-de-fonte", version: 1, exportedAt: new Date().toISOString(), docs: S.db.dump()};
+  const name = `carnet-de-fonte-${todayStr()}.json`, text = JSON.stringify(payload);
+  try {
+    const file = new File([text], name, {type: "application/json"});
+    if (navigator.canShare && navigator.canShare({files: [file]})) { await navigator.share({files: [file], title: "Sauvegarde Carnet de Fonte"}); markBackup(); return; }
+  } catch (e) { if (e && e.name === "AbortError") return; }
+  try {
+    const url = URL.createObjectURL(new Blob([text], {type: "application/json"}));
+    const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500); markBackup();
+  } catch (e) { toast("Export impossible sur cet appareil."); }
+}
+function readImport(input){
+  const f = input.files && input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const p = JSON.parse(r.result);
+      if (!p || p.app !== "carnet-de-fonte" || typeof p.docs !== "object" || !p.docs) throw 0;
+      S.importPending = p; render();
+    } catch (e) { toast("Ce fichier n'est pas une sauvegarde du Carnet de Fonte."); }
+  };
+  r.onerror = () => toast("Lecture du fichier impossible.");
+  r.readAsText(f);
+}
+
+/* ---------- Boot ---------- */
+async function boot(){
+  const h = location.hash.slice(1);
+  if (TABS.some(x => x.id === h)) S.tab = h;
+  render();
+  if (window.CDF_LOCAL) { S.local = true; S.lastBackup = load("cdf.backup"); return connect(localDB(), true); }
+  let c = window.claude;
+  for (let i = 0; i < 30 && !(c && c.use); i++) { await sleep(100); c = window.claude; }
+  if (!(c && c.use)) { S.status = "nodb"; render(); return; }
+  let db = null, user = null;
+  try { [db, user] = await Promise.all([c.use("db"), c.use("user")]); } catch (e) {}
+  if (!db) { S.status = "nodb"; render(); return; }
+  return connect(db, user ? await user.isOwner() : true);
+}
+function connect(db, canWrite){
+  S.db = db; S.col = db.collection("sessions"); S.status = "loading"; S.canWrite = canWrite;
+  render();
+  S.loadT = setTimeout(() => { if (S.status === "loading") { S.status = "slow"; render(true); } }, 10000);
+  S.col.onSnapshot(snap => {
+    S.sessions = new Map(snap.docs.filter(x => x.exists).map(x => [x.id, x.data()]));
+    if (!snap.metadata.fromCache) { clearTimeout(S.loadT); S.status = "ready"; }
+    if (!S.draft && S.restoreId) {
+      const r = S.sessions.get(S.restoreId);
+      if (r) { S.draft = {...clone(r), id: S.restoreId}; S.restoreId = null; }
+      else if (!snap.metadata.fromCache) { S.restoreId = null; remember(null); }
+    }
+    render(true);
+  }, () => { clearTimeout(S.loadT); S.status = "error"; render(true); });
+  db.doc("profile/main").onSnapshot(snap => { S.profile = snap.exists ? snap.data() : null; render(true); }, () => {});
+  db.collection("body").onSnapshot(snap => { S.body = snap.docs.filter(x => x.exists).map(x => ({...x.data(), id: x.id})).filter(x => x.date).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0); render(true); }, () => {});
+  db.collection("templates").onSnapshot(snap => { S.templates = new Map(snap.docs.filter(x => x.exists).map(x => [x.id, x.data()])); render(true); }, () => {});
+}
+boot();
+})();
+</script>
+
+<script>if ("serviceWorker" in navigator) addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });</script>
+</body>
+</html>

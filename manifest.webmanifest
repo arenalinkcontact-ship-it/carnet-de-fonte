@@ -1,9 +1,9 @@
 {
-  "name": "Carnet de Fonte",
-  "short_name": "Fonte",
+  "name": "REC Performance",
+  "short_name": "REC",
   "lang": "fr",
   "dir": "ltr",
-  "description": "Carnet de musculation : séances, charges, historique, calendrier, récap du mois et suivi du poids.",
+  "description": "Carnet de performance en musculation : séances, charges, historique, calendrier, récap du mois et suivi du poids.",
   "start_url": "./#seance",
   "scope": "./",
   "display": "standalone",

@@ -9,13 +9,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Fonte">
+<meta name="apple-mobile-web-app-title" content="REC">
 <meta name="theme-color" content="#0D0A0B">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <script>window.CDF_LOCAL = true;</script>
 </head>
 <body>
-<title>Carnet de Fonte</title>
+<title>REC Performance</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -221,6 +221,7 @@ textarea.input{height:auto;min-height:88px;padding:12px 14px;resize:vertical;lin
 .sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;position:sticky;top:-8px;background:var(--surface);padding-top:8px;padding-bottom:4px;z-index:1}
 .sheet-head h2{font-size:28px;text-transform:uppercase}
 .pk-list{display:flex;flex-direction:column}
+.sheet-tools{display:flex;align-items:center;gap:4px;flex-shrink:0}
 .pk-h{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:16px 0 6px}
 .pick{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:50px;padding:8px 2px;border-bottom:1px solid var(--line);text-align:left;width:100%}
 .pick:active{background:var(--surface-2)}
@@ -365,7 +366,7 @@ html.resting .toast{bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom,0px
 </style>
 
 <header class="topbar"><div class="wrap">
-  <span id="light" class="light" aria-live="polite"><i></i><span id="light-text">Carnet de fonte</span></span>
+  <span id="light" class="light" aria-live="polite"><i></i><span id="light-text">REC</span></span>
   <span id="savestate" class="savestate" data-state="idle"></span>
 </div></header>
 <main class="wrap">
@@ -414,6 +415,7 @@ const ICON = {
   check:'<svg class="ic" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   x:'<svg class="ic" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
   trash:'<svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></svg>',
+  pen:'<svg class="ic" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>',
   up:'<svg class="ic" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',
   right:'<svg class="ic" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>',
   left:'<svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>'
@@ -478,9 +480,14 @@ function progSub(name, lo){
   return d ? `Dernière : ${d} · charges reprises` : "Pas encore faite";
 }
 const cmpDesc = (a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : (b.createdAt || 0) - (a.createdAt || 0);
+function libList(){
+  const o = (S.exSettings && S.exSettings.lib) || {}, out = [];
+  for (const [g, arr] of Object.entries(LIB)) for (const n of arr) { const x = o[keyOf(n)]; out.push({name: x && x.name ? x.name : n, group: x && x.group ? x.group : g}); }
+  return out;
+}
 function groupOf(name){
   const k = keyOf(name);
-  for (const [g, arr] of Object.entries(LIB)) if (arr.some(n => keyOf(n) === k)) return g;
+  for (const x of libList()) if (keyOf(x.name) === k) return x.group;
   const r = S.IDX && S.IDX.get(k);
   return r ? r.group : "Autre";
 }
@@ -494,6 +501,7 @@ const S = {
   newDate: todayStr(), customName: "", confirm: null,
   pickQ: "", pickCreate: null, barData: null, lineData: null,
   save: "idle", mounted: null, restoreId: load("cdf.open"), templates: new Map(),
+  exSettings: {lib: {}}, exEdit: null,
   profile: null, body: [], wDate: todayStr(), wKg: "", meas: {}, measOpen: false, pf: null, wPts: null
 };
 const pending = new Map();
@@ -661,11 +669,11 @@ function render(fromData){
 }
 function renderTop(){
   const d = S.draft, light = $("#light"), lt = $("#light-text");
-  let on = false, txt = "Carnet de fonte";
+  let on = false, txt = "REC";
   if (d && d.date === todayStr()) {
     on = true;
     const mins = Math.floor((Date.now() - (d.createdAt || Date.now())) / 60000);
-    txt = mins >= 0 && mins < 300 ? `En salle · ${Math.floor(mins / 60)}:${pad(mins % 60)}` : "En salle";
+    txt = mins >= 0 && mins < 300 ? `REC · ${Math.floor(mins / 60)}:${pad(mins % 60)}` : "REC";
   } else if (d) txt = "Modification";
   light.classList.toggle("on", on); lt.textContent = txt;
   const sv = $("#savestate");
@@ -775,7 +783,7 @@ function exCardHTML(e, i){
   return `<article class="ex-card" data-ei="${i}">
     <header class="ex-head">
       <div class="ex-title"><h3>${esc(e.name)}</h3><span class="chip">${esc(e.group || "Autre")}</span></div>
-      ${ro ? "" : `<div class="ex-tools">${i > 0 ? `<button class="icon-btn" data-act="up-ex" data-e="${i}" aria-label="Monter ${esc(e.name)}">${ICON.up}</button>` : ""}<button class="icon-btn${S.confirm === "ex" + i ? " armed" : ""}" data-act="del-ex" data-e="${i}" aria-label="Retirer ${esc(e.name)}">${S.confirm === "ex" + i ? "Retirer ?" : ICON.trash}</button></div>`}
+      ${ro ? "" : `<div class="ex-tools"><button class="icon-btn" data-act="edit-ex" data-name="${esc(e.name)}" aria-label="Renommer ${esc(e.name)}">${ICON.pen}</button>${i > 0 ? `<button class="icon-btn" data-act="up-ex" data-e="${i}" aria-label="Monter ${esc(e.name)}">${ICON.up}</button>` : ""}<button class="icon-btn${S.confirm === "ex" + i ? " armed" : ""}" data-act="del-ex" data-e="${i}" aria-label="Retirer ${esc(e.name)}">${S.confirm === "ex" + i ? "Retirer ?" : ICON.trash}</button></div>`}
     </header>
     <p class="ex-last">${last ? `Dernière fois (${esc(fmtDate(last.date, {day: "numeric", month: "short"}))}) : <b class="num">${esc(summary(last.sets))}</b>` : "Première fois sur cet exercice"}${best != null && best > 0 ? ` · record <b class="num">${esc(fmtW(best))}</b>` : ""}</p>
     <div class="sets">
@@ -812,7 +820,7 @@ function refreshCard(i){
 /* Picker sheet */
 function knownExercises(){
   const m = new Map();
-  for (const [g, arr] of Object.entries(LIB)) for (const n of arr) m.set(keyOf(n), {name: n, group: g, rec: null});
+  for (const x of libList()) m.set(keyOf(x.name), {name: x.name, group: x.group, rec: null});
   for (const [k, r] of S.IDX) {
     const rec = r.entries.reduce((b, x) => x.top != null && (b === null || x.top > b) ? x.top : b, null);
     const cur = m.get(k);
@@ -874,7 +882,7 @@ function histHTML(){
       h += `<section class="sec"><h2 class="month-h">${esc(monthLabel(m))}<span class="num">${plural(arr.length, "séance")} · ${fmtVol(vol)}</span></h2><div class="s-list">${arr.map(sessionRow).join("")}</div></section>`;
     }
   } else {
-    h += `<input id="hist-q" class="input" type="search" placeholder="Rechercher un exercice" autocomplete="off" value="${esc(S.histQ)}" aria-label="Rechercher un exercice"><div id="hist-list">${exListHTML()}</div>`;
+    h += `${S.canWrite ? `<button class="btn btn-quiet btn-block" data-act="manage-ex">Renommer mes exercices</button>` : ""}<input id="hist-q" class="input" type="search" placeholder="Rechercher un exercice" autocomplete="off" value="${esc(S.histQ)}" aria-label="Rechercher un exercice"><div id="hist-list">${exListHTML()}</div>`;
   }
   return h;
 }
@@ -896,7 +904,7 @@ function openExDetail(key){
   const pts = en.slice(-20).map(x => ({v: bodyweight ? Math.max(...x.sets.map(s => s.reps)) : x.top, date: x.date, sets: x.sets}));
   S.lineData = {pts, unit: bodyweight ? "reps" : "kg"};
   const sel = pts.length - 1;
-  openSheet(`<div class="sheet-head"><div><p class="eyebrow">${esc(r.group)}</p><h2>${esc(r.name)}</h2></div><button class="icon-btn" data-act="sheet-close" aria-label="Fermer">${ICON.x}</button></div>
+  openSheet(`<div class="sheet-head"><div><p class="eyebrow">${esc(r.group)}</p><h2>${esc(r.name)}</h2></div><div class="sheet-tools">${S.canWrite ? `<button class="btn-mini" data-act="edit-ex" data-name="${esc(r.name)}">Renommer</button>` : ""}<button class="icon-btn" data-act="sheet-close" aria-label="Fermer">${ICON.x}</button></div></div>
     <div class="tiles">
       <div class="tile"><small>Record</small><b class="num">${bodyweight ? esc(Math.max(...en.map(x => Math.max(...x.sets.map(s => s.reps))))) + " reps" : esc(fmtW(rec.top))}</b><span>${esc(fmtDate(rec.date, {day: "numeric", month: "short"}))}</span></div>
       <div class="tile"><small>1RM estimé</small><b class="num">${e1 > 0 ? nf0.format(e1) + " kg" : "—"}</b><span class="num">${e1 > 0 && curWeight() ? nfKg.format(Math.round(e1 / curWeight() * 100) / 100) + " × ton poids" : "formule d'Epley"}</span></div>
@@ -1129,6 +1137,10 @@ document.addEventListener("click", e => {
     case "save-profile": saveProfile(); return;
     case "toggle-meas": S.measOpen = !S.measOpen; render(); return;
     case "export-data": exportData(); return;
+    case "manage-ex": openManage(); return;
+    case "edit-ex": openEditEx(b.dataset.name); return;
+    case "ex-group": S.exEdit.group = b.dataset.group; b.parentElement.querySelectorAll("[data-act=ex-group]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.group === S.exEdit.group))); return;
+    case "save-ex": saveExercise(); return;
     case "import-data": { const f = $("#import-file"); if (f) { f.value = ""; f.click(); } return; }
     case "import-cancel": S.importPending = null; render(); return;
     case "import-confirm": {
@@ -1414,6 +1426,55 @@ async function keepAwake(on){
   } catch (e) { WL = null; }
 }
 
+/* ---------- Exercise names ---------- */
+function openManage(){
+  const known = knownExercises();
+  let h = `<div class="sheet-head"><h2>Mes exercices</h2><button class="icon-btn" data-act="sheet-close" aria-label="Fermer">${ICON.x}</button></div>
+    <p class="muted">Touche un exercice pour changer son nom ou son groupe musculaire. Le changement s'applique aussi à tes séances passées et à tes séances types.</p><div class="pk-list">`;
+  for (const g of GROUPS) {
+    const arr = [...known.values()].filter(x => x.group === g).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    if (!arr.length) continue;
+    h += `<h3 class="pk-h">${esc(g)}</h3>` + arr.map(x => { const r = S.IDX.get(keyOf(x.name)); return `<button class="pick" data-act="edit-ex" data-name="${esc(x.name)}"><span class="pick-name">${esc(x.name)}</span><span class="pick-sub">${r ? plural(r.entries.length, "séance") : "Jamais fait"} ›</span></button>`; }).join("");
+  }
+  openSheet(h + `</div>`, "Mes exercices");
+}
+function openEditEx(name){
+  const k = keyOf(name), r = S.IDX.get(k);
+  const used = [...S.sessions.values()].filter(s => (s.exercises || []).some(e => keyOf(e.name) === k)).length;
+  const inTpl = [...S.templates.values()].some(t => (t.exercises || []).some(e => keyOf(e.name) === k));
+  S.exEdit = {old: name, group: (knownExercises().get(k) || {}).group || (r && r.group) || "Autre"};
+  openSheet(`<div class="sheet-head"><h2>Modifier l'exercice</h2><button class="icon-btn" data-act="sheet-close" aria-label="Fermer">${ICON.x}</button></div>
+    <label class="field" for="ex-new"><span class="eyebrow">Nom de l'exercice</span><input id="ex-new" class="input" maxlength="60" autocomplete="off" value="${esc(name)}"></label>
+    <div class="field"><span class="eyebrow">Groupe musculaire</span><div class="chips">${GROUPS.map(g => `<button class="chip-btn" data-act="ex-group" data-group="${esc(g)}" aria-pressed="${g === S.exEdit.group}">${esc(g)}</button>`).join("")}</div></div>
+    <p class="muted">${!used && !inTpl && S.draft && S.draft.exercises.some(e => keyOf(e.name) === k) ? "Le changement s'applique à ta séance en cours et à ta liste d'exercices." : used ? `Le changement s'applique aussi à ${used > 1 ? `tes ${used} séances passées` : "ta séance passée"}${inTpl ? " et à ta séance type" : ""}. Tes records et ta progression sont conservés.` : inTpl ? "Le changement s'applique aussi à ta séance type." : "Tu n'as pas encore fait cet exercice : seul son nom dans la liste change."}</p>
+    <button class="btn btn-primary btn-block" data-act="save-ex">Enregistrer</button>`, "Modifier l'exercice");
+}
+async function saveExercise(){
+  const E = S.exEdit; if (!E || !S.canWrite || !S.db) return;
+  const name = ($("#ex-new").value || "").trim().replace(/\s+/g, " ");
+  if (!name) { toast("Donne un nom à l'exercice."); return; }
+  const oldK = keyOf(E.old), newK = keyOf(name), group = E.group || "Autre";
+  if (newK !== oldK && knownExercises().has(newK)) { toast(`« ${name} » existe déjà dans ta liste. Choisis un autre nom.`); return; }
+  const lib = {...((S.exSettings && S.exSettings.lib) || {})};
+  for (const [g, arr] of Object.entries(LIB)) for (const n of arr) { const ok = keyOf(n), cur = lib[ok] && lib[ok].name ? lib[ok].name : n; if (keyOf(cur) === oldK) lib[ok] = {name, group}; }
+  S.exSettings = {...S.exSettings, lib};
+  const fix = list => (list || []).map(e => keyOf(e.name) === oldK ? {...e, name, group} : e);
+  const touched = [...S.sessions.entries()].filter(([id, v]) => (v.exercises || []).some(e => keyOf(e.name) === oldK) && !(S.draft && S.draft.id === id));
+  if (S.draft && S.draft.exercises.some(e => keyOf(e.name) === oldK)) { S.draft.exercises = fix(S.draft.exercises); queueSave(S.draft); }
+  for (const [id, v] of touched) S.sessions.set(id, {...v, exercises: fix(v.exercises)});
+  closeSheet(); render();
+  try {
+    await S.db.doc("settings/exercises").set({lib, updatedAt: Date.now()});
+    for (const [id, v] of touched) { const b = clone(v); b.exercises = fix(b.exercises); b.updatedAt = Date.now(); await S.col.doc(id).set(b); }
+    for (const [tid, t] of [...S.templates.entries()]) {
+      if (!(t.exercises || []).some(e => keyOf(e.name) === oldK)) continue;
+      const b = clone(t); b.exercises = fix(b.exercises); b.updatedAt = Date.now(); S.templates.set(tid, b);
+      await S.db.collection("templates").doc(tid).set(b);
+    }
+    toast(newK === oldK && name === E.old ? "Exercice mis à jour" : `Renommé en « ${name} »`);
+  } catch (e) { toast("Renommage interrompu. Vérifie ta connexion et réessaie."); }
+}
+
 /* ---------- Local store (installed app) ---------- */
 function localDB(){
   const KEY = "cdf.db.v1";
@@ -1453,10 +1514,10 @@ function backupHTML(){
 function markBackup(){ S.lastBackup = todayStr(); store("cdf.backup", S.lastBackup); render(); toast("Sauvegarde exportée"); }
 async function exportData(){
   const payload = {app: "carnet-de-fonte", version: 1, exportedAt: new Date().toISOString(), docs: S.db.dump()};
-  const name = `carnet-de-fonte-${todayStr()}.json`, text = JSON.stringify(payload);
+  const name = `rec-sauvegarde-${todayStr()}.json`, text = JSON.stringify(payload);
   try {
     const file = new File([text], name, {type: "application/json"});
-    if (navigator.canShare && navigator.canShare({files: [file]})) { await navigator.share({files: [file], title: "Sauvegarde Carnet de Fonte"}); markBackup(); return; }
+    if (navigator.canShare && navigator.canShare({files: [file]})) { await navigator.share({files: [file], title: "Sauvegarde REC"}); markBackup(); return; }
   } catch (e) { if (e && e.name === "AbortError") return; }
   try {
     const url = URL.createObjectURL(new Blob([text], {type: "application/json"}));
@@ -1472,7 +1533,7 @@ function readImport(input){
       const p = JSON.parse(r.result);
       if (!p || p.app !== "carnet-de-fonte" || typeof p.docs !== "object" || !p.docs) throw 0;
       S.importPending = p; render();
-    } catch (e) { toast("Ce fichier n'est pas une sauvegarde du Carnet de Fonte."); }
+    } catch (e) { toast("Ce fichier n'est pas une sauvegarde REC."); }
   };
   r.onerror = () => toast("Lecture du fichier impossible.");
   r.readAsText(f);
@@ -1506,6 +1567,7 @@ function connect(db, canWrite){
     }
     render(true);
   }, () => { clearTimeout(S.loadT); S.status = "error"; render(true); });
+  db.doc("settings/exercises").onSnapshot(snap => { S.exSettings = snap.exists ? {lib: {}, ...snap.data()} : {lib: {}}; render(true); }, () => {});
   db.doc("profile/main").onSnapshot(snap => { S.profile = snap.exists ? snap.data() : null; render(true); }, () => {});
   db.collection("body").onSnapshot(snap => { S.body = snap.docs.filter(x => x.exists).map(x => ({...x.data(), id: x.id})).filter(x => x.date).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0); render(true); }, () => {});
   db.collection("templates").onSnapshot(snap => { S.templates = new Map(snap.docs.filter(x => x.exists).map(x => [x.id, x.data()])); render(true); }, () => {});
